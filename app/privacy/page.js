@@ -1,6 +1,6 @@
 export const metadata = {
   title: 'Privacy Policy',
-  description: 'Privacy Policy for WigVella.',
+  description: 'Privacy Policy for WigZ.',
 };
 
 export default function PrivacyPolicy() {
@@ -34,7 +34,7 @@ export default function PrivacyPolicy() {
 
           <h2 className="text-xl font-bold text-foreground mt-8 mb-4">5. Contact Us</h2>
           <p className="mb-4">
-            If you have any questions about this Privacy Policy, please contact us at support@wigvella.store.
+            If you have any questions about this Privacy Policy, please contact us at support@wigz.store.
           </p>
         </div>
       </div>

@@ -8,7 +8,7 @@ import { useCart } from './CartContext';
 const NAV_LINKS = [
   { href: '/', label: 'Home' },
   { href: '/products', label: 'Catalog' },
-  { href: '/contact', label: 'Contact' },
+  // { href: '/contact', label: 'Contact' },
 ];
 
 export default function Navbar() {
@@ -79,7 +79,7 @@ export default function Navbar() {
               <Link href="/" className="flex items-center flex-shrink-0">
                 <span className="text-2xl font-bold tracking-tight text-foreground uppercase">WigZ</span>
               </Link>
-              
+
               <div className="hidden lg:flex items-center gap-6">
                 {NAV_LINKS.map((link) => (
                   <Link

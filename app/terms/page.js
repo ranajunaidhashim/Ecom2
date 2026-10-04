@@ -1,6 +1,6 @@
 export const metadata = {
   title: 'Terms of Service',
-  description: 'Terms of Service for WigVella.',
+  description: 'Terms of Service for WigZ.',
 };
 
 export default function TermsOfService() {
@@ -34,7 +34,7 @@ export default function TermsOfService() {
 
           <h2 className="text-xl font-bold text-foreground mt-8 mb-4">5. Contact Information</h2>
           <p className="mb-4">
-            Questions about the Terms of Service should be sent to us at support@wigvella.store.
+            Questions about the Terms of Service should be sent to us at support@wigz.store.
           </p>
         </div>
       </div>

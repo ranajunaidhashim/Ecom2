@@ -1,6 +1,6 @@
 export const metadata = {
   title: 'Shipping Information',
-  description: 'Shipping Information for WigVella.',
+  description: 'Shipping Information for WigZ.',
 };
 
 export default function ShippingInfo() {
@@ -32,7 +32,7 @@ export default function ShippingInfo() {
 
           <h2 className="text-xl font-bold text-foreground mt-8 mb-4">4. Customs, Duties and Taxes</h2>
           <p className="mb-4">
-            WigVella is not responsible for any customs and taxes applied to your order. All fees imposed during or after shipping are the responsibility of the customer (tariffs, taxes, etc.).
+            WigZ is not responsible for any customs and taxes applied to your order. All fees imposed during or after shipping are the responsibility of the customer (tariffs, taxes, etc.).
           </p>
 
           <h2 className="text-xl font-bold text-foreground mt-8 mb-4">5. Damages</h2>
