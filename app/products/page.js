@@ -168,7 +168,7 @@ export default async function ProductsPage({ searchParams }) {
                         key={c.value}
                         href={withParam({ category: c.value, page: '' })}
                         className={`px-5 py-2.5 lg:px-4 lg:py-2.5 rounded-full lg:rounded-xl text-sm font-medium transition-all duration-300 flex items-center justify-between ${isActive
-                            ? 'bg-foreground text-background lg:bg-primary/10 lg:text-primary shadow-md lg:shadow-none'
+                            ? 'bg-foreground text-white lg:bg-primary/10 lg:text-primary shadow-md lg:shadow-none'
                             : 'bg-surface lg:bg-transparent border border-border lg:border-transparent text-muted hover:text-foreground hover:bg-subtle'
                           }`}
                       >

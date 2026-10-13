@@ -47,7 +47,7 @@ export default function Navbar() {
   return (
     <>
       {/* Announcement Bar */}
-      <div className="bg-foreground text-background text-xs text-center py-2 px-4 uppercase tracking-widest font-semibold">
+      <div className="bg-foreground text-white text-xs text-center py-2 px-4 uppercase tracking-widest font-semibold">
         Hurry Up Don't Move
       </div>
 

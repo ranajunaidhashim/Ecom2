@@ -57,7 +57,7 @@ export default function CategoryMarquee({ products = [] }) {
                     <div className="mt-auto flex flex-col gap-2">
                       <button
                         onClick={() => setQuickViewProduct(product)}
-                        className="w-full bg-foreground text-background font-bold text-xs uppercase tracking-wider py-3 hover:opacity-80 transition-opacity rounded-md"
+                        className="w-full bg-foreground text-white font-bold text-xs uppercase tracking-wider py-3 hover:opacity-80 transition-opacity rounded-md shadow-sm"
                       >
                         Add to Cart
                       </button>
@@ -133,7 +133,7 @@ export default function CategoryMarquee({ products = [] }) {
                   <div className="mt-auto flex flex-col gap-2">
                     <button
                       onClick={() => setQuickViewProduct(product)}
-                      className="w-full bg-foreground text-background font-bold text-xs uppercase tracking-wider py-3 hover:opacity-80 transition-opacity rounded-md"
+                      className="w-full bg-foreground text-white font-bold text-xs uppercase tracking-wider py-3 hover:opacity-80 transition-opacity rounded-md shadow-sm"
                     >
                       Add to Cart
                     </button>

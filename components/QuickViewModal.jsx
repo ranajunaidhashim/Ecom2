@@ -141,7 +141,7 @@ export default function QuickViewModal() {
                     />
                     {idx === 0 && quickViewProduct.category && (
                       <div className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 z-10">
-                        <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest px-2 sm:px-2.5 py-0.5 sm:py-1 bg-foreground text-background rounded shadow-sm">
+                        <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest px-2 sm:px-2.5 py-0.5 sm:py-1 bg-foreground text-white rounded shadow-sm">
                           {quickViewProduct.category}
                         </span>
                       </div>
@@ -240,13 +240,13 @@ export default function QuickViewModal() {
                         disabled={vOutOfStock}
                         className={`px-3 py-2 sm:px-3.5 sm:py-2.5 border rounded-lg sm:rounded-xl text-xs font-semibold uppercase tracking-wider transition-all flex items-center gap-1.5 sm:gap-2 touch-manipulation ${
                           isSelected 
-                            ? 'border-foreground bg-foreground text-background shadow-sm' 
+                            ? 'border-foreground bg-foreground text-white shadow-sm' 
                             : 'border-border bg-surface text-foreground hover:border-foreground/60'
                         } ${vOutOfStock ? 'opacity-40 cursor-not-allowed line-through' : ''}`}
                       >
                         <span>{vLabel}</span>
                         {v.price && v.price !== price && (
-                          <span className={`text-[10px] ${isSelected ? 'text-background/80' : 'text-muted'}`}>
+                          <span className={`text-[10px] ${isSelected ? 'text-white/80' : 'text-muted'}`}>
                             (${Number(v.price).toFixed(2)})
                           </span>
                         )}
@@ -307,7 +307,7 @@ export default function QuickViewModal() {
                 type="button"
                 onClick={handleAddToCart}
                 disabled={!selectedVariant || isOutOfStock}
-                className="w-full bg-foreground text-background font-bold text-xs sm:text-sm uppercase tracking-wider py-3.5 sm:py-4 rounded-xl hover:opacity-90 active:scale-[0.99] transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md touch-manipulation"
+                className="w-full bg-foreground text-white font-bold text-xs sm:text-sm uppercase tracking-wider py-3.5 sm:py-4 rounded-xl hover:opacity-90 active:scale-[0.99] transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md touch-manipulation"
               >
                 {added ? 'Added to Cart ✓' : isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
               </button>

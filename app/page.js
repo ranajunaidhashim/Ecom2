@@ -102,7 +102,7 @@ export default async function Home() {
             </div>
 
             <div className="mt-16 flex justify-center">
-              <Link href="/products?category=human-hair-wigs" className="inline-block border-2 border-foreground text-foreground px-10 py-4 font-bold uppercase tracking-widest hover:bg-foreground hover:text-background transition-colors">
+              <Link href="/products?category=human-hair-wigs" className="inline-block border-2 border-foreground text-foreground px-10 py-4 font-bold uppercase tracking-widest hover:bg-foreground hover:text-white transition-colors">
                 View More
               </Link>
             </div>
@@ -128,7 +128,7 @@ export default async function Home() {
           <div className="mt-12 flex justify-center">
             <Link
               href={`/products?category=${encodeURIComponent(section.value)}`}
-              className="inline-block border-2 border-foreground text-foreground px-10 py-4 font-bold uppercase tracking-widest hover:bg-foreground hover:text-background transition-colors"
+              className="inline-block border-2 border-foreground text-foreground px-10 py-4 font-bold uppercase tracking-widest hover:bg-foreground hover:text-white transition-colors"
             >
               View More
             </Link>
@@ -149,7 +149,7 @@ export default async function Home() {
             </p>
             <Link
               href="/products"
-              className="inline-block border-2 border-foreground text-foreground px-10 py-4 font-bold uppercase tracking-widest hover:bg-foreground hover:text-background transition-colors"
+              className="inline-block border-2 border-foreground text-foreground px-10 py-4 font-bold uppercase tracking-widest hover:bg-foreground hover:text-white transition-colors"
             >
               Browse Catalog
             </Link>

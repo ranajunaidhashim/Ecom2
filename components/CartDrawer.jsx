@@ -85,7 +85,7 @@ export default function CartDrawer() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z" />
               </svg>
               <p className="text-lg font-medium text-foreground uppercase tracking-widest mb-4">Your cart is empty</p>
-              <button onClick={() => setIsCartDrawerOpen(false)} className="bg-foreground text-background font-bold text-sm uppercase tracking-wider py-3 px-8 hover:opacity-80 transition-opacity">
+              <button onClick={() => setIsCartDrawerOpen(false)} className="bg-foreground text-white font-bold text-sm uppercase tracking-wider py-3 px-8 hover:opacity-80 transition-opacity">
                 Continue Shopping
               </button>
             </div>
@@ -149,7 +149,7 @@ export default function CartDrawer() {
                   type="button"
                   onClick={handleApplyDiscount}
                   disabled={!discountCodeInput || !!appliedDiscount || validatingDiscount}
-                  className="bg-foreground text-background px-4 py-2 rounded-sm font-semibold text-sm transition-all disabled:opacity-50 hover:bg-foreground/90 uppercase"
+                  className="bg-foreground text-white px-4 py-2 rounded-sm font-semibold text-sm transition-all disabled:opacity-50 hover:bg-foreground/90 uppercase shadow-sm"
                 >
                   {validatingDiscount ? '...' : 'Apply'}
                 </button>
@@ -174,7 +174,7 @@ export default function CartDrawer() {
             
             <p className="text-xs text-muted mb-2 uppercase tracking-wider text-center">Shipping and taxes calculated at checkout.</p>
             
-            <Link href="/checkout" onClick={() => setIsCartDrawerOpen(false)} className="w-full bg-foreground text-background font-bold text-sm uppercase tracking-wider py-4 text-center hover:opacity-80 transition-opacity flex items-center justify-center gap-2">
+            <Link href="/checkout" onClick={() => setIsCartDrawerOpen(false)} className="w-full bg-foreground text-white font-bold text-sm uppercase tracking-wider py-4 text-center hover:opacity-90 transition-opacity flex items-center justify-center gap-2 shadow-md">
               Checkout
             </Link>
           </div>

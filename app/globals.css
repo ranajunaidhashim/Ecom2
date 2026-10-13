@@ -23,6 +23,8 @@ html {
     /* Black for buttons */
     --primary-light: 0 0% 20%;
     --primary-dark: 0 0% 0%;
+    --primary-foreground: 0 0% 100%;
+    /* Crisp White #FFFFFF for button text */
     --secondary: 0 100% 50%;
     /* #FF1E1E Red Badges */
     --secondary-light: 0 100% 60%;
@@ -55,6 +57,8 @@ html {
     /* Black for buttons */
     --primary-light: 0 0% 20%;
     --primary-dark: 0 0% 0%;
+    --primary-foreground: 0 0% 100%;
+    /* Crisp White #FFFFFF for button text */
     --secondary: 0 100% 50%;
     /* #FF1E1E Red Badges */
     --secondary-light: 0 100% 60%;

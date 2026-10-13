@@ -46,7 +46,7 @@ export default function ProductCard({ product }) {
         <div className="mt-auto">
           <button
             onClick={() => setQuickViewProduct(product)}
-            className="w-full bg-foreground text-background font-bold text-sm uppercase tracking-wider py-3 hover:opacity-80 transition-opacity"
+            className="w-full bg-foreground text-white font-bold text-sm uppercase tracking-wider py-3 hover:opacity-80 transition-opacity shadow-sm"
           >
             Add to Cart
           </button>

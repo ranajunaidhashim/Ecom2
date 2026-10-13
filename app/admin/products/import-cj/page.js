@@ -101,7 +101,7 @@ export default function ImportCjPage() {
           <button
             type="submit"
             disabled={loading || !pid.trim()}
-            className="bg-foreground hover:bg-foreground/90 text-background font-semibold py-3 px-8 rounded-lg transition-colors whitespace-nowrap disabled:opacity-50"
+            className="bg-foreground hover:bg-foreground/90 text-white font-semibold py-3 px-8 rounded-lg transition-colors whitespace-nowrap disabled:opacity-50"
           >
             {loading ? 'Fetching...' : 'Fetch Data'}
           </button>
