@@ -8,17 +8,23 @@ html {
 
 @layer base {
   :root {
-    --background: 167 80% 44%; /* #16C9A3 Vibrant Teal */
+    --background: 167 80% 44%;
+    /* #16C9A3 Vibrant Teal */
     --subtle: 167 80% 40%;
-    --surface: 0 0% 96%; /* #F5F5F5 Off-white for cards */
-    --elevated: 168 64% 29%; /* #1B7C69 Dark Teal */
+    --surface: 0 0% 96%;
+    /* #F5F5F5 Off-white for cards */
+    --elevated: 168 64% 29%;
+    /* #1B7C69 Dark Teal */
     --border: 168 64% 29%;
-    --foreground: 0 0% 7%; /* #111111 Dark Charcoal */
+    --foreground: 0 0% 7%;
+    /* #111111 Dark Charcoal */
     --muted: 0 0% 40%;
-    --primary: 0 0% 0%; /* Black for buttons */
+    --primary: 0 0% 0%;
+    /* Black for buttons */
     --primary-light: 0 0% 20%;
     --primary-dark: 0 0% 0%;
-    --secondary: 0 100% 50%; /* #FF1E1E Red Badges */
+    --secondary: 0 100% 50%;
+    /* #FF1E1E Red Badges */
     --secondary-light: 0 100% 60%;
     --secondary-dark: 0 100% 40%;
     --selection-bg: 0 0% 0%;
@@ -34,17 +40,23 @@ html {
 
   .dark {
     /* Forcing the same vibrant teal theme across dark mode to match Pendora Fashion strictly */
-    --background: 167 80% 44%; /* #16C9A3 Vibrant Teal */
+    --background: 167 80% 44%;
+    /* #16C9A3 Vibrant Teal */
     --subtle: 167 80% 40%;
-    --surface: 0 0% 96%; /* #F5F5F5 Off-white for cards */
-    --elevated: 168 64% 29%; /* #1B7C69 Dark Teal */
+    --surface: 0 0% 96%;
+    /* #F5F5F5 Off-white for cards */
+    --elevated: 168 64% 29%;
+    /* #1B7C69 Dark Teal */
     --border: 168 64% 29%;
-    --foreground: 0 0% 7%; /* #111111 Dark Charcoal */
+    --foreground: 0 0% 7%;
+    /* #111111 Dark Charcoal */
     --muted: 0 0% 40%;
-    --primary: 0 0% 0%; /* Black for buttons */
+    --primary: 0 0% 0%;
+    /* Black for buttons */
     --primary-light: 0 0% 20%;
     --primary-dark: 0 0% 0%;
-    --secondary: 0 100% 50%; /* #FF1E1E Red Badges */
+    --secondary: 0 100% 50%;
+    /* #FF1E1E Red Badges */
     --secondary-light: 0 100% 60%;
     --secondary-dark: 0 100% 40%;
     --selection-bg: 0 0% 0%;

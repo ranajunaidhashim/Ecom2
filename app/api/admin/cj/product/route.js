@@ -17,19 +17,26 @@ export async function GET(request) {
   }
 
   try {
-    // 1. Get Access Token using the API Key
-    const authResponse = await fetch('https://developers.cjdropshipping.com/api2.0/v1/authentication/getAccessToken', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ apiKey }),
-    });
+    let accessToken = null;
 
-    const authData = await authResponse.json();
-    if (!authData.result || !authData.data?.accessToken) {
-      throw new Error(authData.message || 'Failed to authenticate with CJ API Key');
+    // If key is an MCP Token or direct JWT access token, extract and use directly
+    if (apiKey.includes('eyJ') || apiKey.startsWith('MCP@')) {
+      accessToken = apiKey.includes(':') ? apiKey.split(':')[1] : apiKey;
+    } else {
+      // 1. Get Access Token using the traditional API Key
+      const authResponse = await fetch('https://developers.cjdropshipping.com/api2.0/v1/authentication/getAccessToken', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ apiKey }),
+      });
+
+      const authData = await authResponse.json();
+      if (!authData.result || !authData.data?.accessToken) {
+        throw new Error(authData.message || 'Failed to authenticate with CJ API Key');
+      }
+
+      accessToken = authData.data.accessToken;
     }
-
-    const accessToken = authData.data.accessToken;
 
     // Determine if targetId is a URL, SKU or PID
     let resolvedPid = targetId;
@@ -55,7 +62,11 @@ export async function GET(request) {
       });
       const searchData = await searchRes.json();
 
-      if (!searchData.result || !searchData.data?.content || searchData.data.content.length === 0) {
+      if (!searchData.result) {
+        throw new Error(searchData.message || `Product search failed: ${targetId}`);
+      }
+
+      if (!searchData.data?.content || searchData.data.content.length === 0) {
         throw new Error(`Product not found for SKU: ${targetId}`);
       }
 

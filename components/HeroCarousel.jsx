@@ -98,8 +98,8 @@ export default function HeroCarousel() {
           {/* Decorative background element if needed */}
           <div className="absolute inset-0 opacity-10 bg-[url('/pattern.svg')] bg-cover mix-blend-overlay z-0 pointer-events-none"></div>
 
-          {/* Content */}
-          <div className="relative z-10 px-4 transition-all duration-700 transform translate-y-0 opacity-100">
+          {/* Content (Commented out for now) */}
+          {/* <div className="relative z-10 px-4 transition-all duration-700 transform translate-y-0 opacity-100">
             <h1 className="text-5xl sm:text-7xl md:text-8xl font-extrabold text-white tracking-tight mb-4 uppercase drop-shadow-lg">
               {slides[currentSlide].title}
             </h1>
@@ -112,7 +112,7 @@ export default function HeroCarousel() {
             >
               {slides[currentSlide].buttonText}
             </Link>
-          </div>
+          </div> */}
 
           {/* Navigation Dots */}
           <div className="absolute bottom-8 flex gap-3 z-10">

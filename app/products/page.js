@@ -57,7 +57,7 @@ const getProductsCached = unstable_cache(
         sortConfig = { score: { $meta: "textScore" } };
       }
 
-      const projection = { name: 1, images: 1, category: 1, variants: 1, shippingCost: 1 };
+      const projection = { name: 1, images: 1, category: 1, variants: 1, shippingCost: 1, description: 1 };
       if (search) {
         projection.score = { $meta: "textScore" };
       }
