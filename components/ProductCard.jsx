@@ -32,7 +32,7 @@ export default function ProductCard({ product }) {
           )}
         </div>
       </Link>
-      
+
       <div className="p-4 sm:p-5 flex flex-col flex-grow text-center">
         <Link href={`/products/${product._id}`}>
           <h3 className="font-semibold text-foreground uppercase tracking-wide text-sm sm:text-base leading-snug hover:opacity-70 transition-opacity mb-2">
@@ -42,7 +42,7 @@ export default function ProductCard({ product }) {
         <div className="font-bold text-foreground text-lg mb-4">
           ${variant ? variant.price.toFixed(2) : '0.00'}
         </div>
-        
+
         <div className="mt-auto">
           <button
             onClick={() => setQuickViewProduct(product)}

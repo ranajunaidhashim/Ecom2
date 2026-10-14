@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState, useCallback, useMemo } from 'react';
 
 const CartContext = createContext(null);
 const STORAGE_KEY = 'lumina_cart';
@@ -40,7 +40,7 @@ export function CartProvider({ children }) {
     }
   }, [appliedDiscount, hydrated]);
 
-  const addToCart = (item) => {
+  const addToCart = useCallback((item) => {
     setCart((prev) => {
       const existing = prev.find(
         (i) => i.productId === item.productId && i.variantId === item.variantId
@@ -54,29 +54,33 @@ export function CartProvider({ children }) {
       }
       return [...prev, { ...item, quantity: item.quantity || 1 }];
     });
-  };
+  }, []);
 
-  const removeFromCart = (productId, variantId) => {
+  const removeFromCart = useCallback((productId, variantId) => {
     setCart((prev) => prev.filter((i) => !(i.productId === productId && i.variantId === variantId)));
-  };
+  }, []);
 
-  const updateQuantity = (productId, variantId, quantity) => {
-    if (quantity <= 0) return removeFromCart(productId, variantId);
+  const updateQuantity = useCallback((productId, variantId, quantity) => {
+    if (quantity <= 0) {
+      setCart((prev) => prev.filter((i) => !(i.productId === productId && i.variantId === variantId)));
+      return;
+    }
     setCart((prev) =>
       prev.map((i) =>
         i.productId === productId && i.variantId === variantId ? { ...i, quantity } : i
       )
     );
-  };
+  }, []);
 
-  const clearCart = () => setCart([]);
+  const clearCart = useCallback(() => setCart([]), []);
 
-  const totalItems = cart.reduce((sum, i) => sum + i.quantity, 0);
-  const subtotal = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
-  const cartShippingCost = cart.reduce((sum, i) => sum + (i.shippingCost || 0) * i.quantity, 0);
+  const totalItems = useMemo(() => cart.reduce((sum, i) => sum + i.quantity, 0), [cart]);
+  const subtotal = useMemo(() => cart.reduce((sum, i) => sum + i.price * i.quantity, 0), [cart]);
+  const cartShippingCost = useMemo(() => cart.reduce((sum, i) => sum + (i.shippingCost || 0) * i.quantity, 0), [cart]);
 
-  let dynamicDiscountAmount = 0;
-  if (appliedDiscount) {
+  const computedAppliedDiscount = useMemo(() => {
+    if (!appliedDiscount) return null;
+    let dynamicDiscountAmount = 0;
     if (appliedDiscount.type === 'percentage') {
       dynamicDiscountAmount = (subtotal * appliedDiscount.value) / 100;
     } else if (appliedDiscount.type === 'fixed') {
@@ -85,22 +89,42 @@ export function CartProvider({ children }) {
     if (dynamicDiscountAmount > subtotal) {
       dynamicDiscountAmount = subtotal;
     }
-  }
+    return { ...appliedDiscount, amount: dynamicDiscountAmount };
+  }, [appliedDiscount, subtotal]);
 
-  const computedAppliedDiscount = appliedDiscount 
-    ? { ...appliedDiscount, amount: dynamicDiscountAmount } 
-    : null;
+  const contextValue = useMemo(() => ({
+    cart,
+    hydrated,
+    addToCart,
+    removeFromCart,
+    updateQuantity,
+    clearCart,
+    totalItems,
+    subtotal,
+    cartShippingCost,
+    appliedDiscount: computedAppliedDiscount,
+    setAppliedDiscount,
+    isCartDrawerOpen,
+    setIsCartDrawerOpen,
+    quickViewProduct,
+    setQuickViewProduct
+  }), [
+    cart,
+    hydrated,
+    addToCart,
+    removeFromCart,
+    updateQuantity,
+    clearCart,
+    totalItems,
+    subtotal,
+    cartShippingCost,
+    computedAppliedDiscount,
+    isCartDrawerOpen,
+    quickViewProduct
+  ]);
 
   return (
-    <CartContext.Provider
-      value={{ 
-        cart, hydrated, addToCart, removeFromCart, updateQuantity, clearCart, 
-        totalItems, subtotal, cartShippingCost,
-        appliedDiscount: computedAppliedDiscount, setAppliedDiscount,
-        isCartDrawerOpen, setIsCartDrawerOpen,
-        quickViewProduct, setQuickViewProduct
-      }}
-    >
+    <CartContext.Provider value={contextValue}>
       {children}
     </CartContext.Provider>
   );

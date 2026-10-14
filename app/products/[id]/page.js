@@ -32,11 +32,47 @@ async function getProduct(id) {
     return {
       ...product,
       _id: product._id.toString(),
-      variants: product.variants.map(v => ({ ...v, _id: v._id.toString() }))
+      variants: product.variants.map((v) => ({ ...v, _id: v._id.toString() })),
     };
   } catch (error) {
     return null;
   }
+}
+
+export async function generateMetadata({ params }) {
+  const { id } = await params;
+  const product = await getProduct(id);
+  if (!product) {
+    return {
+      title: 'Product Not Found',
+    };
+  }
+
+  const price = product.variants?.[0]?.price ? `$${product.variants[0].price.toFixed(2)}` : '';
+  const cleanDescription = (product.description || '')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 160);
+
+  const images = product.images?.[0] ? [product.images[0]] : [];
+
+  return {
+    title: `${product.name} ${price ? `— ${price}` : ''}`,
+    description: cleanDescription || `Shop ${product.name} at WigZ. Curated premium essentials with fast shipping.`,
+    openGraph: {
+      title: `${product.name} | WigZ`,
+      description: cleanDescription,
+      images,
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${product.name} | WigZ`,
+      description: cleanDescription,
+      images,
+    },
+  };
 }
 
 export default async function ProductDetailPage({ params }) {

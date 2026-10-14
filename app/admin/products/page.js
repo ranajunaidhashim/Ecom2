@@ -8,9 +8,9 @@ const CATEGORY_LABEL = { cosmetics: 'Cosmetics', dental: 'Dental', toys: 'Toys',
 const CATEGORY_DOT = { cosmetics: 'bg-primary', dental: 'bg-secondary', toys: 'bg-warning', other: 'bg-muted' };
 
 function StockBadge({ stock }) {
-  if (stock <= 0) return <span className="px-2 py-0.5 rounded-full bg-danger/15 text-danger text-xs font-medium">Out of stock</span>;
-  if (stock < 10) return <span className="px-2 py-0.5 rounded-full bg-warning/15 text-warning text-xs font-medium">{stock} left</span>;
-  return <span className="px-2 py-0.5 rounded-full bg-success/15 text-success text-xs font-medium">{stock} in stock</span>;
+  if (stock <= 0) return <span className="px-2.5 py-0.5 rounded-full bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/30 text-xs font-semibold">Out of stock</span>;
+  if (stock < 10) return <span className="px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30 text-xs font-semibold">{stock} left</span>;
+  return <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 text-xs font-semibold">{stock} in stock</span>;
 }
 
 export default function AdminProductsPage() {
@@ -99,14 +99,14 @@ export default function AdminProductsPage() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="bg-elevated text-muted uppercase text-xs tracking-wider">
+              <thead className="bg-elevated text-foreground font-semibold uppercase text-xs tracking-wider border-b border-border">
                 <tr>
-                  <th className="text-left py-3 px-6">Product</th>
-                  <th className="text-left py-3 px-6">Category</th>
-                  <th className="text-left py-3 px-6">Variants</th>
-                  <th className="text-left py-3 px-6">Stock</th>
-                  <th className="text-left py-3 px-6">Source</th>
-                  <th className="text-right py-3 px-6">Actions</th>
+                  <th className="text-left py-3.5 px-6">Product</th>
+                  <th className="text-left py-3.5 px-6">Category</th>
+                  <th className="text-left py-3.5 px-6">Variants</th>
+                  <th className="text-left py-3.5 px-6">Stock</th>
+                  <th className="text-left py-3.5 px-6">Source</th>
+                  <th className="text-right py-3.5 px-6">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">

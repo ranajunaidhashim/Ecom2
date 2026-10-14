@@ -42,16 +42,17 @@ const getCategoryProducts = unstable_cache(
         { name: "Beauty", regex: "beauty", value: "beauty" },
         { name: "Bags", regex: "bag", value: "bags" }
       ];
-      const categorySections = [];
 
-      for (const cat of targetCategories) {
-        const products = await Product.find(
-          { category: { $regex: new RegExp(cat.regex, "i") } },
-          { name: 1, images: 1, category: 1, variants: 1, shippingCost: 1, description: 1 }
-        ).sort({ createdAt: -1 }).limit(10).lean();
+      const categoryResults = await Promise.all(
+        targetCategories.map(async (cat) => {
+          const products = await Product.find(
+            { category: { $regex: new RegExp(cat.regex, "i") } },
+            { name: 1, images: 1, category: 1, variants: 1, shippingCost: 1, description: 1 }
+          ).sort({ createdAt: -1 }).limit(10).lean();
 
-        if (products.length > 0) {
-          categorySections.push({
+          if (!products || products.length === 0) return null;
+
+          return {
             name: cat.name,
             value: cat.value,
             products: products.map(p => ({
@@ -59,11 +60,11 @@ const getCategoryProducts = unstable_cache(
               _id: p._id.toString(),
               variants: p.variants.map(v => ({ ...v, _id: v._id.toString() }))
             }))
-          });
-        }
-      }
+          };
+        })
+      );
 
-      return categorySections;
+      return categoryResults.filter(Boolean);
     } catch (error) {
       console.error("Failed to fetch category products", error);
       return [];
@@ -74,8 +75,10 @@ const getCategoryProducts = unstable_cache(
 );
 
 export default async function Home() {
-  const wigsProducts = await getWigsProducts();
-  const categorySections = await getCategoryProducts();
+  const [wigsProducts, categorySections] = await Promise.all([
+    getWigsProducts(),
+    getCategoryProducts()
+  ]);
 
   const hasAnyProducts = (wigsProducts && wigsProducts.length > 0) || (categorySections && categorySections.length > 0);
 

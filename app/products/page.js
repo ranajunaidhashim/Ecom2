@@ -47,10 +47,6 @@ const getProductsCached = unstable_cache(
         query.$text = { $search: search };
       }
 
-      const totalCount = await Product.countDocuments(query);
-      const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
-      const safePage = Math.min(Math.max(1, page), totalPages);
-
       // If text search, sort by text score unless a specific sort is requested
       let sortConfig = buildSort(sort);
       if (search && sort === 'newest') {
@@ -62,11 +58,18 @@ const getProductsCached = unstable_cache(
         projection.score = { $meta: "textScore" };
       }
 
-      const products = await Product.find(query, projection)
-        .sort(sortConfig)
-        .skip((safePage - 1) * PAGE_SIZE)
-        .limit(PAGE_SIZE)
-        .lean();
+      const skipAmount = Math.max(0, (Math.max(1, page) - 1) * PAGE_SIZE);
+
+      const [totalCount, products] = await Promise.all([
+        Product.countDocuments(query),
+        Product.find(query, projection)
+          .sort(sortConfig)
+          .skip(skipAmount)
+          .limit(PAGE_SIZE)
+          .lean()
+      ]);
+
+      const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
 
       return {
         products: products.map(p => ({

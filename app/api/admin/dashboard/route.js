@@ -2,20 +2,26 @@ import { NextResponse } from 'next/server';
 import { dbConnect } from '@/lib/db';
 import Order from '@/models/Order';
 import Product from '@/models/Product';
+import { getAdminRole } from '@/lib/admin-auth';
 
 export async function GET() {
   try {
     await dbConnect();
+    const role = await getAdminRole();
+    const isSuperAdmin = role === 'superadmin';
     
-    // Total Revenue (only paid or fulfilled orders)
-    const revenueResult = await Order.aggregate([
-      { $match: { status: { $in: ['paid', 'fulfilled'] } } },
-      { $group: { _id: null, total: { $sum: '$totalAmount' } } }
-    ]);
-    const totalRevenue = revenueResult[0]?.total || 0;
+    let totalRevenue = 0;
+    let totalOrders = 0;
 
-    // Total Orders
-    const totalOrders = await Order.countDocuments();
+    // Only superadmin can see revenue and total orders count
+    if (isSuperAdmin) {
+      const revenueResult = await Order.aggregate([
+        { $match: { status: { $in: ['paid', 'fulfilled'] } } },
+        { $group: { _id: null, total: { $sum: '$totalAmount' } } }
+      ]);
+      totalRevenue = revenueResult[0]?.total || 0;
+      totalOrders = await Order.countDocuments();
+    }
 
     // Total Products
     const totalProducts = await Product.countDocuments();
@@ -27,9 +33,10 @@ export async function GET() {
       .lean();
 
     return NextResponse.json({
+      role,
+      isSuperAdmin,
       metrics: {
-        totalRevenue,
-        totalOrders,
+        ...(isSuperAdmin ? { totalRevenue, totalOrders } : {}),
         totalProducts,
       },
       recentOrders,

@@ -35,7 +35,9 @@ export default function HeroCarousel() {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
+      if (document.visibilityState === 'visible') {
+        setCurrentSlide((prev) => (prev + 1) % slides.length);
+      }
     }, 5000);
     return () => clearInterval(timer);
   }, []);
@@ -86,6 +88,7 @@ export default function HeroCarousel() {
                 src={slide.image} 
                 alt={slide.title} 
                 fill 
+                sizes="100vw"
                 className={`object-cover object-center transition-transform duration-[8000ms] ease-linear ${
                   index === currentSlide ? 'scale-105' : 'scale-100'
                 }`}
@@ -94,9 +97,6 @@ export default function HeroCarousel() {
               <div className="absolute inset-0 bg-black/40"></div>
             </div>
           ))}
-
-          {/* Decorative background element if needed */}
-          <div className="absolute inset-0 opacity-10 bg-[url('/pattern.svg')] bg-cover mix-blend-overlay z-0 pointer-events-none"></div>
 
           {/* Content (Commented out for now) */}
           {/* <div className="relative z-10 px-4 transition-all duration-700 transform translate-y-0 opacity-100">

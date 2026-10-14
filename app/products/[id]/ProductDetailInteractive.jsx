@@ -35,7 +35,7 @@ export default function ProductDetailInteractive({ product }) {
 
   const handleBuyNow = () => {
     handleAddToCart();
-    router.push('/cart');
+    router.push('/checkout');
   };
 
   return (

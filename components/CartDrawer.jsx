@@ -2,9 +2,11 @@
 import { useCart } from './CartContext';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 
 export default function CartDrawer() {
+  const pathname = usePathname();
   const { 
     cart, 
     isCartDrawerOpen, 
@@ -22,7 +24,26 @@ export default function CartDrawer() {
   const [discountError, setDiscountError] = useState(null);
   const [validatingDiscount, setValidatingDiscount] = useState(false);
 
-  if (!hydrated) return null;
+  useEffect(() => {
+    if (isCartDrawerOpen) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+
+      const handleKeyDown = (e) => {
+        if (e.key === 'Escape') {
+          setIsCartDrawerOpen(false);
+        }
+      };
+      window.addEventListener('keydown', handleKeyDown);
+
+      return () => {
+        document.body.style.overflow = originalOverflow;
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, [isCartDrawerOpen, setIsCartDrawerOpen]);
+
+  if (!hydrated || pathname?.startsWith('/admin')) return null;
 
   const handleApplyDiscount = async () => {
     if (!discountCodeInput) return;

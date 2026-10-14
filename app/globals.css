@@ -73,6 +73,39 @@ html {
     --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
     --shadow-card-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   }
+
+  /* Admin Dashboard Theme - Professional Slate & Pure High Contrast */
+  .admin-theme {
+    --background: 220 20% 97%;      /* #F3F4F6 Crisp light slate */
+    --subtle: 220 20% 95%;          /* #EEF2F6 */
+    --surface: 0 0% 100%;           /* #FFFFFF Pure white */
+    --elevated: 214 32% 91%;        /* #E2E8F0 */
+    --border: 215 20% 85%;          /* #CBD5E1 */
+    --foreground: 222 47% 11%;      /* #0F172A Sharp dark slate */
+    --muted: 215 16% 40%;           /* #475569 High contrast text */
+    --primary: 222 47% 11%;         /* #0F172A */
+    --primary-foreground: 0 0% 100%;/* Pure white */
+    --scrollbar-track: 220 20% 95%;
+    --scrollbar-thumb: 215 20% 80%;
+    --scrollbar-thumb-hover: 215 20% 65%;
+  }
+
+  .dark .admin-theme,
+  .admin-theme.dark,
+  [data-theme='dark'] .admin-theme {
+    --background: 222 47% 11%;      /* #0F172A Sleek deep slate */
+    --subtle: 222 47% 8%;           /* #0A0F1D */
+    --surface: 217 33% 15%;         /* #1E293B Crisp elevated card */
+    --elevated: 215 28% 22%;        /* #293548 Header background */
+    --border: 215 25% 25%;          /* #334155 Clean border */
+    --foreground: 210 40% 98%;      /* #F8FAFC Crisp white text */
+    --muted: 215 20% 70%;           /* #A0AEC0 Very readable bright muted text */
+    --primary: 210 40% 98%;         /* #F8FAFC */
+    --primary-foreground: 222 47% 11%;/* #0F172A */
+    --scrollbar-track: 222 47% 11%;
+    --scrollbar-thumb: 215 25% 25%;
+    --scrollbar-thumb-hover: 215 25% 35%;
+  }
 }
 
 body {

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Order from '@/models/Order';
 import PaymentLog from '@/models/PaymentLog';
 import { dbConnect } from '@/lib/db';
+import ClearCartOnMount from './ClearCartOnMount';
 
 export default async function CheckoutSuccessPage({ searchParams }) {
   const { orderId, t, s, simulated } = await searchParams;
@@ -37,6 +38,7 @@ export default async function CheckoutSuccessPage({ searchParams }) {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-4">
+      <ClearCartOnMount />
       <div className="max-w-md w-full text-center bg-surface p-10 rounded-2xl border border-border shadow-card">
         <div className="w-16 h-16 rounded-full bg-success/10 flex items-center justify-center mx-auto mb-6">
           <svg className="w-8 h-8 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>

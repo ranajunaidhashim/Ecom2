@@ -139,12 +139,12 @@ export default function AdminDiscountsPage() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm whitespace-nowrap">
-            <thead className="bg-elevated border-b border-border text-muted">
+            <thead className="bg-elevated border-b border-border text-foreground font-semibold uppercase text-xs tracking-wider">
               <tr>
-                <th className="px-6 py-4 font-medium">Code</th>
-                <th className="px-6 py-4 font-medium">Discount</th>
-                <th className="px-6 py-4 font-medium">Status</th>
-                <th className="px-6 py-4 font-medium text-right">Actions</th>
+                <th className="px-6 py-4">Code</th>
+                <th className="px-6 py-4">Discount</th>
+                <th className="px-6 py-4">Status</th>
+                <th className="px-6 py-4 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
@@ -157,8 +157,8 @@ export default function AdminDiscountsPage() {
                   <td className="px-6 py-4">
                     <button
                       onClick={() => handleToggle(discount._id, discount.isActive)}
-                      className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        discount.isActive ? 'bg-success/10 text-success' : 'bg-muted/10 text-muted'
+                      className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                        discount.isActive ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30' : 'bg-zinc-500/15 text-zinc-600 dark:text-zinc-400 border border-zinc-500/30'
                       }`}
                     >
                       {discount.isActive ? 'Active' : 'Disabled'}

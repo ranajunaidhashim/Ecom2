@@ -176,13 +176,13 @@ export default function ImportCjPage() {
 
             <div className="bg-elevated rounded-xl border border-border overflow-x-auto">
               <table className="w-full text-sm text-left min-w-[600px]">
-                <thead className="bg-subtle text-muted text-xs uppercase tracking-wider border-b border-border">
+                <thead className="bg-elevated text-foreground font-semibold text-xs uppercase tracking-wider border-b border-border">
                   <tr>
-                    <th className="px-4 py-3">Variant</th>
-                    <th className="px-4 py-3">SKU</th>
-                    <th className="px-4 py-3">CJ Cost</th>
-                    <th className="px-4 py-3">Retail Price</th>
-                    {/* <th className="px-4 py-3">Profit</th> */}
+                    <th className="px-4 py-3.5">Variant</th>
+                    <th className="px-4 py-3.5">SKU</th>
+                    <th className="px-4 py-3.5">CJ Cost</th>
+                    <th className="px-4 py-3.5">Retail Price</th>
+                    {/* <th className="px-4 py-3.5">Profit</th> */}
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">

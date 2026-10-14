@@ -51,11 +51,11 @@ export default function AdminOrdersPage() {
   };
 
   const statusBadge = (status) => (
-    <span className={`inline-block px-2 py-0.5 rounded text-xs font-medium ${
-      status === 'paid' ? 'bg-success/10 text-success' :
-      status === 'fulfilled' ? 'bg-primary/10 text-primary' :
-      status === 'cancelled' ? 'bg-danger/10 text-danger' :
-      'bg-warning/10 text-warning'
+    <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-semibold ${
+      status === 'paid' ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30' :
+      status === 'fulfilled' ? 'bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-500/30' :
+      status === 'cancelled' ? 'bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/30' :
+      'bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30'
     }`}>
       {status.charAt(0).toUpperCase() + status.slice(1)}
     </span>
@@ -106,15 +106,15 @@ export default function AdminOrdersPage() {
           <div className="hidden lg:block bg-surface border border-border rounded-xl overflow-hidden">
             <div className="overflow-auto max-h-[65vh]">
               <table className="w-full text-sm text-left">
-                <thead className="bg-elevated text-muted text-xs uppercase tracking-wider border-b border-border sticky top-0 z-10">
+                <thead className="bg-elevated text-foreground font-semibold text-xs uppercase tracking-wider border-b border-border sticky top-0 z-10">
                   <tr>
-                    <th className="px-5 py-3 font-medium">Order</th>
-                    <th className="px-5 py-3 font-medium">Customer</th>
-                    <th className="px-5 py-3 font-medium">Date</th>
-                    <th className="px-5 py-3 font-medium">Items</th>
-                    <th className="px-5 py-3 font-medium">Payment</th>
-                    <th className="px-5 py-3 font-medium">Total</th>
-                    <th className="px-5 py-3 font-medium">Status</th>
+                    <th className="px-5 py-3.5">Order</th>
+                    <th className="px-5 py-3.5">Customer</th>
+                    <th className="px-5 py-3.5">Date</th>
+                    <th className="px-5 py-3.5">Items</th>
+                    <th className="px-5 py-3.5">Payment</th>
+                    <th className="px-5 py-3.5">Total</th>
+                    <th className="px-5 py-3.5">Status</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
