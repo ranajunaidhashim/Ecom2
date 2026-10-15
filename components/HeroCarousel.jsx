@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 const slides = [
   {
     id: 1,
-    image: '/cover1.jfif',
+    image: '/cover1.jpg',
     title: 'Special offers',
     subtitle: 'Save big on selected items',
     link: '/products',
@@ -14,7 +14,7 @@ const slides = [
   },
   {
     id: 2,
-    image: '/wigscover.jfif',
+    image: '/wigscover.jpg',
     title: 'Premium Quality',
     subtitle: 'Discover our top rated collection',
     link: '/products',
@@ -75,23 +75,21 @@ export default function HeroCarousel() {
       {/* Hero Banner */}
       <div className="w-full relative">
         <div className="relative w-full overflow-hidden bg-black h-[calc(100vh-120px)] flex flex-col items-center justify-center text-center">
-          
+
           {/* Background Images */}
           {slides.map((slide, index) => (
             <div
               key={slide.id}
-              className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-                index === currentSlide ? 'opacity-100 z-0' : 'opacity-0 -z-10'
-              }`}
-            >
-              <Image 
-                src={slide.image} 
-                alt={slide.title} 
-                fill 
-                sizes="100vw"
-                className={`object-cover object-center transition-transform duration-[8000ms] ease-linear ${
-                  index === currentSlide ? 'scale-105' : 'scale-100'
+              className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide ? 'opacity-100 z-0' : 'opacity-0 -z-10'
                 }`}
+            >
+              <Image
+                src={slide.image}
+                alt={slide.title}
+                fill
+                sizes="100vw"
+                className={`object-cover object-center transition-transform duration-[8000ms] ease-linear ${index === currentSlide ? 'scale-105' : 'scale-100'
+                  }`}
                 priority={index === 0}
               />
               <div className="absolute inset-0 bg-black/40"></div>
@@ -120,14 +118,13 @@ export default function HeroCarousel() {
               <button
                 key={index}
                 onClick={() => setCurrentSlide(index)}
-                className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                  index === currentSlide ? 'bg-white scale-150' : 'bg-white/50 hover:bg-white/75'
-                }`}
+                className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentSlide ? 'bg-white scale-150' : 'bg-white/50 hover:bg-white/75'
+                  }`}
                 aria-label={`Go to slide ${index + 1}`}
               />
             ))}
           </div>
-          
+
         </div>
       </div>
 
