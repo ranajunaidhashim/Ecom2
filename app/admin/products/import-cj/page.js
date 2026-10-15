@@ -30,6 +30,21 @@ export default function ImportCjPage() {
 
   const [previewData, setPreviewData] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [bulkPrice, setBulkPrice] = useState('');
+
+  const applyPriceToAllVariants = (priceVal) => {
+    const numericPrice = parseFloat(priceVal) || 0;
+    const updatedVariants = previewData.variants.map((v) => ({
+      ...v,
+      price: numericPrice,
+    }));
+    setPreviewData({ ...previewData, variants: updatedVariants });
+  };
+
+  const handleApplyBulkPrice = () => {
+    if (bulkPrice === '' || isNaN(Number(bulkPrice))) return;
+    applyPriceToAllVariants(bulkPrice);
+  };
 
   const handleFetch = async (e) => {
     e.preventDefault();
@@ -101,7 +116,7 @@ export default function ImportCjPage() {
           <button
             type="submit"
             disabled={loading || !pid.trim()}
-            className="bg-foreground hover:bg-foreground/90 text-white font-semibold py-3 px-8 rounded-lg transition-colors whitespace-nowrap disabled:opacity-50"
+            className="bg-primary hover:opacity-90 active:scale-[0.99] text-primary-foreground font-semibold py-3 px-8 rounded-lg transition-all whitespace-nowrap disabled:opacity-50"
           >
             {loading ? 'Fetching...' : 'Fetch Data'}
           </button>
@@ -170,8 +185,44 @@ export default function ImportCjPage() {
 
           {/* Variants & Pricing */}
           <div className="mb-8">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="font-semibold text-foreground">Variants &amp; Pricing</h3>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+              <div>
+                <h3 className="font-semibold text-foreground">
+                  Variants &amp; Pricing {previewData.variants?.length ? `(${previewData.variants.length})` : ''}
+                </h3>
+                <p className="text-xs text-muted">Set individual retail prices or apply one price to all variants at once.</p>
+              </div>
+
+              {previewData.variants && previewData.variants.length > 0 && (
+                <div className="flex items-center gap-2 bg-surface p-1.5 rounded-lg border border-border">
+                  <span className="text-xs font-medium text-foreground whitespace-nowrap pl-1">Set all:</span>
+                  <div className="relative flex items-center">
+                    <span className="text-muted absolute left-2 text-xs">$</span>
+                    <input
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      placeholder="0.00"
+                      value={bulkPrice}
+                      onChange={(e) => setBulkPrice(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          handleApplyBulkPrice();
+                        }
+                      }}
+                      className="w-24 pl-5 pr-2 py-1 text-xs border border-border rounded bg-elevated text-foreground outline-none focus:ring-1 focus:ring-primary"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleApplyBulkPrice}
+                    className="text-xs bg-primary hover:opacity-90 active:scale-[0.98] text-primary-foreground font-medium py-1 px-3 rounded transition-all whitespace-nowrap shadow-sm"
+                  >
+                    Apply to all
+                  </button>
+                </div>
+              )}
             </div>
 
             <div className="bg-elevated rounded-xl border border-border overflow-x-auto">
@@ -182,7 +233,6 @@ export default function ImportCjPage() {
                     <th className="px-4 py-3.5">SKU</th>
                     <th className="px-4 py-3.5">CJ Cost</th>
                     <th className="px-4 py-3.5">Retail Price</th>
-                    {/* <th className="px-4 py-3.5">Profit</th> */}
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
@@ -190,7 +240,7 @@ export default function ImportCjPage() {
                     <tr key={idx} className="bg-surface">
                       <td className="px-4 py-3 font-medium text-foreground">{variant.label}</td>
                       <td className="px-4 py-3 text-muted">{variant.sku || '-'}</td>
-                      <td className="px-4 py-3 text-muted">${variant.costPrice.toFixed(2)}</td>
+                      <td className="px-4 py-3 text-muted">${Number(variant.costPrice ?? 0).toFixed(2)}</td>
                       <td className="px-4 py-3">
                         <div className="flex items-center">
                           <span className="text-muted mr-1">$</span>
@@ -198,17 +248,12 @@ export default function ImportCjPage() {
                             type="number"
                             min="0"
                             step="0.01"
-                            value={variant.price}
+                            value={variant.price ?? ''}
                             onChange={(e) => updateVariantPrice(idx, e.target.value)}
-                            className="w-20 border border-border rounded px-2 py-1 outline-none focus:border-primary"
+                            className="w-20 border border-border rounded px-2 py-1 outline-none focus:border-primary text-foreground bg-surface"
                           />
                         </div>
                       </td>
-                      {/* <td className="px-4 py-3">
-                        <span className="text-success font-medium">
-                          +${Math.max(0, variant.price - variant.costPrice).toFixed(2)}
-                        </span>
-                      </td> */}
                     </tr>
                   ))}
                 </tbody>
@@ -220,7 +265,7 @@ export default function ImportCjPage() {
             <button
               onClick={handleSave}
               disabled={saving}
-              className="bg-primary hover:bg-primary-dark text-primary-foreground font-semibold py-3 px-8 rounded-lg transition-colors flex items-center gap-2 disabled:opacity-50"
+              className="bg-primary hover:opacity-90 active:scale-[0.99] text-primary-foreground font-semibold py-3 px-8 rounded-lg transition-all flex items-center gap-2 disabled:opacity-50"
             >
               {saving ? 'Saving...' : 'Save'}
               {!saving && <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>}

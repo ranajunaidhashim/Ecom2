@@ -73,7 +73,7 @@ function AdminLoginForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary hover:bg-primary-dark text-primary-foreground font-semibold py-3 rounded-xl transition-colors disabled:opacity-50"
+            className="w-full bg-primary hover:opacity-90 active:scale-[0.99] text-primary-foreground font-semibold py-3 rounded-xl transition-all disabled:opacity-50"
           >
             {loading ? 'Signing in...' : 'Sign In'}
           </button>

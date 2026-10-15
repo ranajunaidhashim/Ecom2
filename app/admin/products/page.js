@@ -8,9 +8,7 @@ const CATEGORY_LABEL = { cosmetics: 'Cosmetics', dental: 'Dental', toys: 'Toys',
 const CATEGORY_DOT = { cosmetics: 'bg-primary', dental: 'bg-secondary', toys: 'bg-warning', other: 'bg-muted' };
 
 function StockBadge({ stock }) {
-  if (stock <= 0) return <span className="px-2.5 py-0.5 rounded-full bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/30 text-xs font-semibold">Out of stock</span>;
-  if (stock < 10) return <span className="px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30 text-xs font-semibold">{stock} left</span>;
-  return <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 text-xs font-semibold">{stock} in stock</span>;
+  return <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 text-xs font-semibold">{stock}</span>;
 }
 
 export default function AdminProductsPage() {
@@ -40,9 +38,7 @@ export default function AdminProductsPage() {
   const stats = useMemo(() => {
     if (!products) return null;
     const totalStock = products.reduce((sum, p) => sum + (p.variants || []).reduce((s, v) => s + (v.stock || 0), 0), 0);
-    const lowStock = products.filter((p) => (p.variants || []).some((v) => v.stock > 0 && v.stock < 10)).length;
-    const outOfStock = products.filter((p) => (p.variants || []).every((v) => (v.stock || 0) <= 0)).length;
-    return { total: products.length, totalStock, lowStock, outOfStock };
+    return { total: products.length, totalStock };
   }, [products]);
 
   const handleDelete = async (id) => {
@@ -66,6 +62,20 @@ export default function AdminProductsPage() {
           <h1 className="text-2xl font-bold text-foreground">Products</h1>
           <p className="text-muted mt-1 text-sm">Manage everything in your catalog — manual or synced.</p>
         </div>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/admin/products/new"
+            className="px-4 py-2 bg-primary text-primary-foreground font-semibold text-xs uppercase tracking-wider rounded-lg shadow-sm hover:opacity-90 active:scale-[0.98] transition-all"
+          >
+            + Add Product
+          </Link>
+          <Link
+            href="/admin/products/import-cj"
+            className="px-4 py-2 bg-surface border border-border text-foreground font-semibold text-xs uppercase tracking-wider rounded-lg shadow-sm hover:bg-elevated transition-colors"
+          >
+            Import from CJ
+          </Link>
+        </div>
       </div>
 
       {stats && (
@@ -77,14 +87,6 @@ export default function AdminProductsPage() {
           <div className="bg-surface border border-border rounded-2xl p-5 shadow-card">
             <p className="text-muted text-xs uppercase tracking-wider font-medium mb-1">Units in Stock</p>
             <p className="text-2xl font-bold text-primary">{stats.totalStock}</p>
-          </div>
-          <div className="bg-surface border border-border rounded-2xl p-5 shadow-card">
-            <p className="text-muted text-xs uppercase tracking-wider font-medium mb-1">Low Stock</p>
-            <p className="text-2xl font-bold text-warning">{stats.lowStock}</p>
-          </div>
-          <div className="bg-surface border border-border rounded-2xl p-5 shadow-card">
-            <p className="text-muted text-xs uppercase tracking-wider font-medium mb-1">Out of Stock</p>
-            <p className="text-2xl font-bold text-danger">{stats.outOfStock}</p>
           </div>
         </div>
       )}

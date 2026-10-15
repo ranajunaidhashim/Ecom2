@@ -97,8 +97,41 @@ export async function GET(request) {
 
     const cjProduct = data.data;
 
+    // Safely parse CJ price which can be number, string like "36.32", or range string like "36.32-196.83"
+    function parseCjPrice(val) {
+      if (val === null || val === undefined) return 0;
+      if (typeof val === 'number') return isNaN(val) ? 0 : val;
+      if (typeof val === 'string') {
+        const match = val.replace(/\s+/g, '').match(/^(\d+(?:\.\d+)?)/);
+        if (match) {
+          const parsed = parseFloat(match[1]);
+          return isNaN(parsed) ? 0 : parsed;
+        }
+      }
+      const num = Number(val);
+      return isNaN(num) ? 0 : num;
+    }
+
+    // Auto-detect best category from CJ categoryName and productName
+    function detectCategory(catName = '', prodName = '') {
+      const combined = `${catName} ${prodName}`.toLowerCase();
+      if (combined.includes('wig') || combined.includes('hair')) return 'human-hair-wigs';
+      if (combined.includes('ear ring') || combined.includes('earring') || combined.includes('ear-ring')) return 'ear-rings';
+      if (combined.includes('ring')) return 'rings';
+      if (combined.includes('bracelet')) return 'bracelet';
+      if (combined.includes('cosmetic')) return 'cosmetics';
+      if (combined.includes('beauty')) return 'beauty';
+      if (combined.includes('dental')) return 'dental';
+      if (combined.includes('bag')) return 'bags';
+      if (combined.includes('shoe')) return 'shoes';
+      if (combined.includes('sunglass')) return 'sunglasses';
+      if (combined.includes('swimwear') || combined.includes('bikini')) return 'swimwear';
+      if (combined.includes('toy')) return 'toys';
+      if (combined.includes('women') || combined.includes('dress') || combined.includes('cloth')) return 'women-clothes';
+      return 'other';
+    }
+
     // Map CJ Product structure to our internal schema format
-    // Defaulting to realistic fields based on common CJ API responses.
     const images = cjProduct.productImageSet || [cjProduct.productImage].filter(Boolean);
 
     // Map variants
@@ -114,11 +147,14 @@ export async function GET(request) {
         cleanLabel = cleanLabel.split(',').pop().trim();
       }
 
+      const rawCost = v.variantSellPrice ?? v.sellPrice ?? v.variantPrice ?? cjProduct.sellPrice;
+      const costPrice = parseCjPrice(rawCost);
+
       return {
         label: cleanLabel || 'Default',
         sku: v.variantSku || '',
-        costPrice: Number(v.sellPrice || cjProduct.sellPrice || 0),
-        price: 0, // Leave retail price as zero
+        costPrice,
+        price: 0, // Leave retail price as zero for admin to set
         stock: 100, // Dropship assumption
         imageUrl: v.variantImage || images[0] || '',
       };
@@ -126,10 +162,11 @@ export async function GET(request) {
 
     // If no variants provided, create a default one
     if (mappedVariants.length === 0) {
+      const fallbackCost = parseCjPrice(cjProduct.sellPrice ?? cjProduct.variantSellPrice);
       mappedVariants.push({
         label: 'Default',
-        sku: cjProduct.productSku || pid,
-        costPrice: Number(cjProduct.sellPrice || 0),
+        sku: cjProduct.productSku || resolvedPid,
+        costPrice: fallbackCost,
         price: 0,
         stock: 100,
         imageUrl: images[0] || '',
@@ -155,7 +192,7 @@ export async function GET(request) {
       name: cjProduct.productNameEn || cjProduct.productName || '',
       description: cleanDescription,
       images: images,
-      category: 'other', // Reverted to default 'other' as requested
+      category: detectCategory(cjProduct.categoryName, cjProduct.productNameEn || cjProduct.productName),
       source: 'cj',
       supplier: {
         name: 'CJ Dropshipping',

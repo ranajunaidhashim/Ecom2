@@ -124,7 +124,7 @@ export default function AdminDiscountsPage() {
           <button
             type="submit"
             disabled={creating}
-            className="w-full sm:w-auto bg-primary hover:bg-primary-dark text-primary-foreground font-medium px-6 py-3 rounded-lg transition-colors disabled:opacity-50"
+            className="w-full sm:w-auto bg-primary hover:opacity-90 active:scale-[0.99] text-primary-foreground font-medium px-6 py-3 rounded-lg transition-all disabled:opacity-50"
           >
             {creating ? 'Creating...' : 'Add Code'}
           </button>

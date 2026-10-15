@@ -44,6 +44,19 @@ export default function ProductForm({ initialProduct, onSubmit, submitLabel }) {
         : [{ ...emptyVariant }],
   }));
 
+  const [bulkPrice, setBulkPrice] = useState('');
+
+  const applyBulkPriceToAll = (customPrice) => {
+    const rawVal = customPrice !== undefined ? customPrice : bulkPrice;
+    if (rawVal === '' || isNaN(Number(rawVal))) return;
+    const formatted = String(parseFloat(rawVal) || 0);
+    const updatedVariants = formData.variants.map((v) => ({
+      ...v,
+      price: formatted,
+    }));
+    setFormData({ ...formData, variants: updatedVariants });
+  };
+
   const handleVariantChange = (index, field, value) => {
     const newVariants = [...formData.variants];
     newVariants[index] = { ...newVariants[index], [field]: value };
@@ -203,19 +216,56 @@ export default function ProductForm({ initialProduct, onSubmit, submitLabel }) {
       </div>
 
       <div className="space-y-6">
-        <div className="flex justify-between items-center border-b border-border pb-2">
-          <h2 className="text-xl font-semibold text-foreground">Variants (options, prices &amp; stock)</h2>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border pb-2">
+          <div>
+            <h2 className="text-xl font-semibold text-foreground">Variants (options, prices &amp; stock)</h2>
+            <p className="text-sm text-muted mt-0.5">
+              Selling a single simple item? Just leave one variant labeled &ldquo;Default&rdquo;. Add more rows for scents, colors, or sizes.
+            </p>
+          </div>
           <button
             type="button"
             onClick={addVariant}
-            className="text-sm bg-elevated hover:bg-border text-foreground py-1.5 px-3 rounded-md transition-colors border border-border"
+            className="text-sm bg-elevated hover:bg-border text-foreground py-1.5 px-3 rounded-md transition-colors border border-border whitespace-nowrap self-start sm:self-auto"
           >
             + Add Variant
           </button>
         </div>
-        <p className="text-sm text-muted -mt-4">
-          Selling a single simple item? Just leave one variant labeled &ldquo;Default&rdquo;. Add more rows for scents, colors, or sizes.
-        </p>
+
+        {formData.variants.length > 1 && (
+          <div className="flex flex-wrap items-center justify-between gap-3 p-3 bg-surface border border-border rounded-xl">
+            <div className="text-xs font-medium text-foreground">
+              Bulk Set Retail Price ({formData.variants.length} variants):
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="relative flex items-center">
+                <span className="text-muted absolute left-2.5 text-xs">$</span>
+                <input
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  placeholder="0.00"
+                  value={bulkPrice}
+                  onChange={(e) => setBulkPrice(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      applyBulkPriceToAll();
+                    }
+                  }}
+                  className="w-28 pl-6 pr-2 py-1.5 text-xs rounded-lg border border-border bg-elevated text-foreground outline-none focus:ring-1 focus:ring-primary"
+                />
+              </div>
+              <button
+                type="button"
+                onClick={() => applyBulkPriceToAll()}
+                className="text-xs bg-primary hover:opacity-90 active:scale-[0.98] text-primary-foreground font-medium py-1.5 px-3 rounded-lg transition-all whitespace-nowrap shadow-sm"
+              >
+                Apply to all variants
+              </button>
+            </div>
+          </div>
+        )}
 
         {formData.variants.map((variant, index) => (
           <div key={index} className="p-4 bg-elevated rounded-xl border border-border relative">
@@ -282,7 +332,7 @@ export default function ProductForm({ initialProduct, onSubmit, submitLabel }) {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-primary hover:bg-primary-dark text-primary-foreground font-semibold py-4 px-8 rounded-xl transition-colors disabled:opacity-50"
+          className="w-full bg-primary hover:opacity-90 active:scale-[0.99] text-primary-foreground font-semibold py-4 px-8 rounded-xl transition-all disabled:opacity-50"
         >
           {loading ? 'Saving...' : submitLabel}
         </button>

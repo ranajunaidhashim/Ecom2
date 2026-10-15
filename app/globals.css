@@ -84,6 +84,8 @@ html {
     --foreground: 222 47% 11%;      /* #0F172A Sharp dark slate */
     --muted: 215 16% 40%;           /* #475569 High contrast text */
     --primary: 222 47% 11%;         /* #0F172A */
+    --primary-light: 222 47% 25%;
+    --primary-dark: 222 47% 20%;   /* Slightly lighter slate on hover, maintains crisp white text */
     --primary-foreground: 0 0% 100%;/* Pure white */
     --scrollbar-track: 220 20% 95%;
     --scrollbar-thumb: 215 20% 80%;
@@ -100,8 +102,10 @@ html {
     --border: 215 25% 25%;          /* #334155 Clean border */
     --foreground: 210 40% 98%;      /* #F8FAFC Crisp white text */
     --muted: 215 20% 70%;           /* #A0AEC0 Very readable bright muted text */
-    --primary: 210 40% 98%;         /* #F8FAFC */
-    --primary-foreground: 222 47% 11%;/* #0F172A */
+    --primary: 210 40% 98%;         /* #F8FAFC Crisp white button */
+    --primary-light: 210 40% 92%;
+    --primary-dark: 214 32% 91%;   /* Light slate on hover - retains high contrast dark text */
+    --primary-foreground: 222 47% 11%;/* #0F172A Dark text */
     --scrollbar-track: 222 47% 11%;
     --scrollbar-thumb: 215 25% 25%;
     --scrollbar-thumb-hover: 215 25% 35%;
