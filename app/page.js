@@ -6,7 +6,7 @@ import ProductCard from "@/components/ProductCard";
 import HeroCarousel from "@/components/HeroCarousel";
 import CategoryMarquee from "@/components/CategoryMarquee";
 
-export const revalidate = 86400; // 24 hours
+export const revalidate = 300;
 
 const getWigsProducts = unstable_cache(
   async () => {
@@ -28,7 +28,7 @@ const getWigsProducts = unstable_cache(
     }
   },
   ['wigs-products'],
-  { revalidate: 86400, tags: ['products'] }
+  { revalidate: 300, tags: ['products'] }
 );
 
 const getCategoryProducts = unstable_cache(
@@ -71,7 +71,7 @@ const getCategoryProducts = unstable_cache(
     }
   },
   ['category-sections'],
-  { revalidate: 86400, tags: ['products'] }
+  { revalidate: 300, tags: ['products'] }
 );
 
 export default async function Home() {

@@ -132,8 +132,13 @@ export default function Navbar() {
                 </svg>
               </button>
 
-              {/* User Account */}
-              <Link href="/admin/login" className="hidden lg:block p-2 text-foreground hover:opacity-70 transition-opacity" aria-label="Account login">
+              {/* User Account / Dashboard Login */}
+              <Link
+                href="/admin/login"
+                className="p-2 text-foreground hover:opacity-70 transition-opacity flex items-center"
+                aria-label="Login to Dashboard"
+                title="Login to Dashboard"
+              >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                 </svg>
@@ -192,9 +197,8 @@ export default function Navbar() {
       )}
 
       <div
-        className={`fixed inset-y-0 left-0 z-[101] w-72 max-w-[80vw] bg-white text-zinc-900 border-r border-zinc-200 shadow-2xl lg:hidden flex flex-col transform transition-transform duration-300 ease-in-out ${
-          menuOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        className={`fixed inset-y-0 left-0 z-[101] w-72 max-w-[80vw] bg-white text-zinc-900 border-r border-zinc-200 shadow-2xl lg:hidden flex flex-col transform transition-transform duration-300 ease-in-out ${menuOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
         role="dialog"
         aria-modal="true"
         aria-label="Navigation menu"
@@ -224,11 +228,10 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
-                className={`flex items-center justify-between px-3.5 py-3 rounded-lg text-sm font-semibold tracking-wide transition-colors ${
-                  active
+                className={`flex items-center justify-between px-3.5 py-3 rounded-lg text-sm font-semibold tracking-wide transition-colors ${active
                     ? 'bg-zinc-900 text-white shadow-sm'
                     : 'text-zinc-800 hover:bg-zinc-100 hover:text-black'
-                }`}
+                  }`}
               >
                 <span>{link.label}</span>
                 <svg className={`w-4 h-4 ${active ? 'text-white' : 'text-zinc-400'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -239,15 +242,15 @@ export default function Navbar() {
           })}
         </div>
 
-        {/* Drawer Bottom Action: Quick Cart */}
-        <div className="p-4 border-t border-zinc-200 bg-zinc-50">
+        {/* Drawer Bottom Actions: Quick Cart & Login to Dashboard */}
+        <div className="p-4 border-t border-zinc-200 bg-zinc-50 space-y-2.5">
           <button
             type="button"
             onClick={() => {
               setMenuOpen(false);
               setIsCartDrawerOpen(true);
             }}
-            className="w-full flex items-center justify-between px-4 py-3.5 bg-zinc-900 text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-sm hover:bg-black active:scale-[0.99] transition-all"
+            className="w-full flex items-center justify-between px-4 py-3 bg-zinc-900 text-white font-bold text-xs uppercase tracking-wider rounded-lg shadow-sm hover:bg-black active:scale-[0.99] transition-all"
           >
             <div className="flex items-center gap-2.5">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -259,6 +262,18 @@ export default function Navbar() {
               {totalItems} {totalItems === 1 ? 'item' : 'items'}
             </span>
           </button>
+
+          {/* Login to Dashboard Button */}
+          <Link
+            href="/admin/login"
+            onClick={() => setMenuOpen(false)}
+            className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg border border-zinc-300 bg-white text-zinc-800 hover:text-black hover:border-zinc-500 font-bold text-xs uppercase tracking-wider shadow-sm transition-all"
+          >
+            <svg className="w-4 h-4 text-zinc-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+            </svg>
+            <span>Login to Dashboard</span>
+          </Link>
         </div>
       </div>
     </>

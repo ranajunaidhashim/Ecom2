@@ -4,7 +4,7 @@ import Product from "@/models/Product";
 import ProductCard from "@/components/ProductCard";
 import Link from "next/link";
 
-export const revalidate = 86400; // 24 hours
+export const revalidate = 300;
 
 const PAGE_SIZE = 12;
 
@@ -86,7 +86,7 @@ const getProductsCached = unstable_cache(
     }
   },
   ['products-list'],
-  { revalidate: 86400, tags: ['products'] }
+  { revalidate: 300, tags: ['products'] }
 );
 
 function getPageNumbers(current, total) {
@@ -139,7 +139,7 @@ export default async function ProductsPage({ searchParams }) {
             className="w-full h-full object-cover object-center"
           />
         </div>
-        
+
         {/* Gradient Overlay for Text Readability */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/60 pointer-events-none z-0" />
 
@@ -171,8 +171,8 @@ export default async function ProductsPage({ searchParams }) {
                         key={c.value}
                         href={withParam({ category: c.value, page: '' })}
                         className={`px-5 py-2.5 lg:px-4 lg:py-2.5 rounded-full lg:rounded-xl text-sm font-medium transition-all duration-300 flex items-center justify-between ${isActive
-                            ? 'bg-foreground text-white lg:bg-primary/10 lg:text-primary shadow-md lg:shadow-none'
-                            : 'bg-surface lg:bg-transparent border border-border lg:border-transparent text-muted hover:text-foreground hover:bg-subtle'
+                          ? 'bg-foreground text-white lg:bg-primary/10 lg:text-primary shadow-md lg:shadow-none'
+                          : 'bg-surface lg:bg-transparent border border-border lg:border-transparent text-muted hover:text-foreground hover:bg-subtle'
                           }`}
                       >
                         {c.label}
@@ -205,8 +205,8 @@ export default async function ProductsPage({ searchParams }) {
                           key={s.value}
                           href={withParam({ sort: s.value === 'newest' ? '' : s.value, page: '' })}
                           className={`transition-all duration-300 font-semibold text-sm pb-1 border-b-2 ${isActive
-                              ? 'text-primary border-primary'
-                              : 'text-muted hover:text-foreground border-transparent hover:border-border'
+                            ? 'text-primary border-primary'
+                            : 'text-muted hover:text-foreground border-transparent hover:border-border'
                             }`}
                         >
                           {s.label}
@@ -237,8 +237,8 @@ export default async function ProductsPage({ searchParams }) {
                   href={withParam({ page: String(Math.max(1, page - 1)) })}
                   aria-disabled={page === 1}
                   className={`px-3 py-2 rounded-lg border text-sm font-medium transition-colors ${page === 1
-                      ? 'border-border text-muted/40 pointer-events-none'
-                      : 'border-border text-muted hover:text-foreground hover:border-primary/40'
+                    ? 'border-border text-muted/40 pointer-events-none'
+                    : 'border-border text-muted hover:text-foreground hover:border-primary/40'
                     }`}
                 >
                   &larr; Prev
@@ -252,8 +252,8 @@ export default async function ProductsPage({ searchParams }) {
                       key={p}
                       href={withParam({ page: p === 1 ? '' : String(p) })}
                       className={`w-9 h-9 flex items-center justify-center rounded-lg border text-sm font-medium transition-colors ${p === page
-                          ? 'bg-primary text-primary-foreground border-primary'
-                          : 'border-border text-muted hover:text-foreground hover:border-primary/40'
+                        ? 'bg-primary text-primary-foreground border-primary'
+                        : 'border-border text-muted hover:text-foreground hover:border-primary/40'
                         }`}
                     >
                       {p}
@@ -265,8 +265,8 @@ export default async function ProductsPage({ searchParams }) {
                   href={withParam({ page: String(Math.min(totalPages, page + 1)) })}
                   aria-disabled={page === totalPages}
                   className={`px-3 py-2 rounded-lg border text-sm font-medium transition-colors ${page === totalPages
-                      ? 'border-border text-muted/40 pointer-events-none'
-                      : 'border-border text-muted hover:text-foreground hover:border-primary/40'
+                    ? 'border-border text-muted/40 pointer-events-none'
+                    : 'border-border text-muted hover:text-foreground hover:border-primary/40'
                     }`}
                 >
                   Next &rarr;

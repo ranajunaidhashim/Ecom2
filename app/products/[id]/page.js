@@ -4,7 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import ProductDetailInteractive from "./ProductDetailInteractive";
 
-export const revalidate = 86400; // 24 hours
+export const revalidate = 300;
 
 export async function generateStaticParams() {
   try {
@@ -14,7 +14,7 @@ export async function generateStaticParams() {
       .sort({ createdAt: -1 })
       .limit(50)
       .lean();
-    
+
     return products.map((product) => ({
       id: product._id.toString(),
     }));
