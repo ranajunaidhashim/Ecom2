@@ -48,7 +48,7 @@ function AdminLoginForm() {
         <div className="flex flex-col items-center mb-8">
           <Logo size={80} />
           <h1 className="text-2xl font-bold text-foreground mt-4">Admin Console</h1>
-          <p className="text-muted text-sm mt-1">WigVella store management</p>
+          <p className="text-muted text-sm mt-1">Velloura Collective store management</p>
         </div>
 
         {error && (

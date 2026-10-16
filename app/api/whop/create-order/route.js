@@ -46,9 +46,9 @@ export async function POST(req) {
       throw validationError;
     }
 
-    let origin = req.headers.get('origin') || process.env.NEXT_PUBLIC_SITE_URL || 'https://wigvella.store';
+    let origin = req.headers.get('origin') || process.env.NEXT_PUBLIC_SITE_URL || 'https://vellouracollective.shop';
     if (origin.startsWith('http://')) {
-      origin = process.env.NEXT_PUBLIC_SITE_URL || 'https://wigvella.store';
+      origin = process.env.NEXT_PUBLIC_SITE_URL || 'https://vellouracollective.shop';
     }
 
     try {

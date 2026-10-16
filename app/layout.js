@@ -17,27 +17,40 @@ export const viewport = {
 };
 
 export const metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://www.wigz.store/'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://vellouracollective.shop/'),
   title: {
-    default: "WigZ | Premium Digital Agency & Store",
-    template: "%s | WigZ",
+    default: "Velloura Collective | Luxury Fashion, Wigs, Swimwear & Fine Jewelry",
+    template: "%s | Velloura Collective",
   },
-  description: "WigZ: Curated premium essentials, cosmetics, and lifestyle products with fast, trackable shipping. Experience digital excellence.",
-  keywords: ["ecommerce", "digital agency", "premium products", "cosmetics", "WigZ", "fast shipping"],
-  authors: [{ name: "WigZ Team" }],
-  creator: "WigZ",
+  description: "Discover Velloura Collective: Curated luxury women's fashion, human hair wigs, chic swimwear, earrings, rings, cosmetics & beauty essentials with fast, trackable worldwide shipping.",
+  keywords: [
+    "Velloura Collective",
+    "women fashion",
+    "luxury human hair wigs",
+    "swimwear",
+    "bikini",
+    "ear rings",
+    "rings",
+    "jewelry",
+    "cosmetics",
+    "beauty",
+    "luxury boutique",
+    "fast shipping"
+  ],
+  authors: [{ name: "Velloura Collective" }],
+  creator: "Velloura Collective",
   openGraph: {
     type: "website",
     locale: "en_US",
     url: "/",
-    title: "WigZ | Premium Digital Agency & Store",
-    description: "Curated premium essentials and lifestyle products.",
-    siteName: "WigZ",
+    title: "Velloura Collective | Luxury Fashion, Wigs, Swimwear & Fine Jewelry",
+    description: "Curated luxury women's fashion, virgin human hair wigs, designer swimwear, and fine jewelry. Elevate your everyday elegance.",
+    siteName: "Velloura Collective",
   },
   twitter: {
     card: "summary_large_image",
-    title: "WigZ | Premium Agency",
-    description: "Curated premium essentials and lifestyle products.",
+    title: "Velloura Collective | Luxury Fashion, Wigs & Jewelry",
+    description: "Curated luxury women's fashion, virgin human hair wigs, designer swimwear, and fine jewelry. Elevate your everyday elegance.",
   },
   robots: {
     index: true,

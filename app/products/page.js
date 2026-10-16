@@ -6,6 +6,15 @@ import Link from "next/link";
 
 export const revalidate = 300;
 
+export const metadata = {
+  title: "Catalog",
+  description: "Browse the curated Velloura Collective collection: luxury human hair wigs, women's fashion, swimwear, fine earrings & jewelry, and cosmetics.",
+  openGraph: {
+    title: "Catalog | Velloura Collective",
+    description: "Browse the curated Velloura Collective collection: luxury human hair wigs, women's fashion, swimwear, fine earrings & jewelry, and cosmetics.",
+  },
+};
+
 const PAGE_SIZE = 12;
 
 const CATEGORIES = [

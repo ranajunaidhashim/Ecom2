@@ -182,7 +182,7 @@ export default function AdminLayoutClient({ children, role }) {
           <div className="flex items-center gap-3">
             <Logo size={36} />
             <div className="leading-tight">
-              <span className="text-base font-extrabold text-foreground tracking-tight block">WigVella</span>
+              <span className="text-base font-extrabold text-foreground tracking-tight block">Velloura Collective</span>
               <span className="text-[10px] font-bold uppercase tracking-wider text-muted">
                 {role === 'superadmin' ? 'Super Admin' : 'Admin'}
               </span>
@@ -273,12 +273,15 @@ export default function AdminLayoutClient({ children, role }) {
         aria-label="Navigation menu"
       >
         {/* Drawer Header */}
-        <div className="h-16 flex items-center justify-between px-5 border-b border-border bg-surface">
-          <div className="flex items-center gap-3">
-            <Logo size={32} />
+        <div className="h-16 flex items-center justify-between px-4 border-b border-border bg-surface">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <Logo size={28} className="flex-shrink-0" />
             <div className="leading-tight">
-              <span className="text-base font-extrabold text-foreground tracking-tight block">WigVella</span>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-muted">
+              <div className="flex flex-col leading-none">
+                <span className="text-sm font-extrabold text-foreground tracking-tight uppercase">Velloura</span>
+                <span className="text-[9px] font-semibold text-muted tracking-widest uppercase mt-0.5">Collective</span>
+              </div>
+              <span className="text-[9px] font-bold uppercase tracking-wider text-primary mt-1 block">
                 {role === 'superadmin' ? 'Super Admin' : 'Admin'}
               </span>
             </div>
@@ -362,20 +365,23 @@ export default function AdminLayoutClient({ children, role }) {
       <div className="flex-grow min-w-0 flex flex-col pb-20 md:pb-6">
         {/* Mobile Sticky Header */}
         <header className="md:hidden sticky top-0 z-30 h-14 bg-surface/95 backdrop-blur-md border-b border-border flex items-center justify-between px-4">
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2 min-w-0">
             <button
               type="button"
               onClick={() => setMobileDrawerOpen(true)}
-              className="p-1.5 -ml-1.5 rounded-lg text-foreground hover:bg-elevated transition-colors"
+              className="p-1.5 -ml-1 rounded-lg text-foreground hover:bg-elevated transition-colors flex-shrink-0"
               aria-label="Open sidebar menu"
             >
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
-            <div className="flex items-center gap-2">
-              <Logo size={28} />
-              <span className="text-base font-extrabold text-foreground tracking-tight">WigVella</span>
+            <div className="flex items-center gap-2 min-w-0">
+              <Logo size={26} className="flex-shrink-0" />
+              <div className="flex flex-col leading-none">
+                <span className="text-xs font-black text-foreground tracking-tight uppercase">Velloura</span>
+                <span className="text-[8px] font-semibold text-muted tracking-widest uppercase">Collective</span>
+              </div>
             </div>
           </div>
 

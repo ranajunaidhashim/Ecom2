@@ -2,7 +2,7 @@ import { dbConnect } from '@/lib/db';
 import Product from '@/models/Product';
 
 export default async function sitemap() {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.wigz.store';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vellouracollective.shop';
 
   const staticRoutes = [
     {
@@ -18,7 +18,31 @@ export default async function sitemap() {
       priority: 0.9,
     },
     {
+      url: `${baseUrl}/products?category=women-clothes`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/products?category=swimwear`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
       url: `${baseUrl}/products?category=human-hair-wigs`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/products?category=ear-rings`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/products?category=rings`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.8,

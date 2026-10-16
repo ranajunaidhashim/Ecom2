@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import { useCart } from './CartContext';
+import Logo from './Logo';
 
 const NAV_LINKS = [
   { href: '/', label: 'Home' },
@@ -101,10 +102,18 @@ export default function Navbar() {
               </button>
             </div>
 
-            {/* Left: Logo & Desktop Links */}
-            <div className="flex flex-1 items-center justify-center lg:justify-start gap-8">
-              <Link href="/" className="flex items-center flex-shrink-0">
-                <span className="text-2xl font-bold tracking-tight text-foreground uppercase">WigZ</span>
+            {/* Center/Left: Logo & Desktop Links */}
+            <div className="flex flex-1 items-center justify-center lg:justify-start gap-8 min-w-0 px-1">
+              <Link href="/" className="flex items-center gap-2 sm:gap-2.5 flex-shrink-0 group max-w-[200px] sm:max-w-none">
+                <Logo size={28} className="sm:w-8 sm:h-8 shadow-sm group-hover:scale-105 transition-transform flex-shrink-0" />
+                <div className="flex flex-col sm:flex-row sm:items-baseline sm:gap-1.5 leading-none">
+                  <span className="text-sm sm:text-2xl font-black sm:font-bold tracking-tight text-foreground uppercase truncate">
+                    Velloura
+                  </span>
+                  <span className="text-[9px] sm:text-2xl font-medium sm:font-bold tracking-widest sm:tracking-tight text-foreground/75 sm:text-foreground uppercase">
+                    Collective
+                  </span>
+                </div>
               </Link>
 
               <div className="hidden lg:flex items-center gap-6">
@@ -205,13 +214,21 @@ export default function Navbar() {
         aria-label="Navigation menu"
       >
         {/* Drawer Header */}
-        <div className="h-16 flex items-center justify-between px-5 border-b border-zinc-200 bg-zinc-50">
-          <Link href="/" onClick={() => setMenuOpen(false)} className="flex items-center gap-2">
-            <span className="text-xl font-extrabold tracking-tight text-zinc-900 uppercase">WigZ</span>
+        <div className="h-16 flex items-center justify-between px-4 border-b border-zinc-200 bg-zinc-50">
+          <Link href="/" onClick={() => setMenuOpen(false)} className="flex items-center gap-2.5 min-w-0">
+            <Logo size={28} className="flex-shrink-0" />
+            <div className="flex flex-col leading-none">
+              <span className="text-sm font-extrabold tracking-tight text-zinc-900 uppercase">
+                Velloura
+              </span>
+              <span className="text-[10px] font-semibold tracking-widest text-zinc-500 uppercase mt-0.5">
+                Collective
+              </span>
+            </div>
           </Link>
           <button
             onClick={() => setMenuOpen(false)}
-            className="p-2 -mr-2 rounded-full text-zinc-500 hover:text-zinc-900 hover:bg-zinc-200/60 transition-colors"
+            className="p-2 -mr-1 rounded-full text-zinc-500 hover:text-zinc-900 hover:bg-zinc-200/60 transition-colors flex-shrink-0"
             aria-label="Close navigation"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

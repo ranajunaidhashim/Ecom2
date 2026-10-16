@@ -59,16 +59,16 @@ export async function generateMetadata({ params }) {
 
   return {
     title: `${product.name} ${price ? `— ${price}` : ''}`,
-    description: cleanDescription || `Shop ${product.name} at WigZ. Curated premium essentials with fast shipping.`,
+    description: cleanDescription || `Shop ${product.name} at Velloura Collective. Curated luxury women's fashion and beauty with fast shipping.`,
     openGraph: {
-      title: `${product.name} | WigZ`,
+      title: `${product.name} | Velloura Collective`,
       description: cleanDescription,
       images,
       type: 'website',
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${product.name} | WigZ`,
+      title: `${product.name} | Velloura Collective`,
       description: cleanDescription,
       images,
     },

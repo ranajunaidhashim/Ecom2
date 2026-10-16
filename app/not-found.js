@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'Page Not Found | WigZ',
+  title: 'Page Not Found | Velloura Collective',
 };
 
 export default function NotFound() {
