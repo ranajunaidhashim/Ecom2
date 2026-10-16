@@ -203,26 +203,16 @@ export default function QuickViewModal() {
           {/* Right: Product Details */}
           <div className="w-full md:w-1/2 p-4 sm:p-6 md:p-8 flex flex-col md:overflow-y-auto md:max-h-[85vh]">
 
-            {/* Top Badges: Category & Stock Status */}
+            {/* Top Badges: Category & Ready to Ship */}
             <div className="flex items-center justify-between gap-2 mb-2 pr-8 sm:pr-0">
               <span className="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider truncate">
                 {quickViewProduct.category ? `Category: ${quickViewProduct.category}` : 'Featured Item'}
               </span>
 
-              {isOutOfStock ? (
-                <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wide text-red-600 bg-red-50 border border-red-200 px-2.5 py-0.5 rounded-full flex-shrink-0">
-                  Out of Stock
-                </span>
-              ) : selectedVariant?.stock > 0 && selectedVariant.stock <= 5 ? (
-                <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wide text-amber-700 bg-amber-50 border border-amber-200 px-2.5 py-0.5 rounded-full flex-shrink-0">
-                  Only {selectedVariant.stock} Left
-                </span>
-              ) : (
-                <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wide text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full flex items-center gap-1.5 flex-shrink-0">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                  In Stock
-                </span>
-              )}
+              <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wide text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full flex items-center gap-1.5 flex-shrink-0">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                In Stock
+              </span>
             </div>
 
             {/* Product Title */}
@@ -337,10 +327,9 @@ export default function QuickViewModal() {
               <button
                 type="button"
                 onClick={handleAddToCart}
-                disabled={isOutOfStock}
-                className="w-full bg-zinc-900 hover:bg-black text-white font-bold text-xs sm:text-sm uppercase tracking-wider py-3.5 sm:py-4 rounded-xl active:scale-[0.99] transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md touch-manipulation"
+                className="w-full bg-zinc-900 hover:bg-black text-white font-bold text-xs sm:text-sm uppercase tracking-wider py-3.5 sm:py-4 rounded-xl active:scale-[0.99] transition-all shadow-md touch-manipulation"
               >
-                {added ? 'Added to Cart ✓' : isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
+                {added ? 'Added to Cart ✓' : 'Add to Cart'}
               </button>
 
               <div className="text-center">

@@ -24,18 +24,15 @@ export default function AddToCartButton({ product, variant, quantity = 1, classN
     setTimeout(() => setAdded(false), 1500);
   };
 
-  const disabled = variant.stock !== undefined && variant.stock <= 0;
-
   return (
     <button
       onClick={handleClick}
-      disabled={disabled}
       className={
         className ||
-        'w-full bg-primary hover:bg-primary-dark text-primary-foreground font-medium py-3 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
+        'w-full bg-primary hover:bg-primary-dark text-primary-foreground font-medium py-3 rounded-xl transition-colors'
       }
     >
-      {disabled ? 'Out of Stock' : added ? 'Added ✓' : children || 'Add to Cart'}
+      {added ? 'Added ✓' : children || 'Add to Cart'}
     </button>
   );
 }

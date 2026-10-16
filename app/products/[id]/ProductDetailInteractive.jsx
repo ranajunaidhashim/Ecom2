@@ -14,7 +14,6 @@ export default function ProductDetailInteractive({ product }) {
   const [added, setAdded] = useState(false);
 
   const variant = product.variants.find((v) => v._id === selectedVariantId) || product.variants[0];
-  const outOfStock = variant && variant.stock !== undefined && variant.stock <= 0;
   const images = product.images && product.images.length > 0 ? product.images : [];
 
   const handleAddToCart = () => {
@@ -99,11 +98,11 @@ export default function ProductDetailInteractive({ product }) {
                   onClick={() => setSelectedVariantId(v._id)}
                   className={`text-left border-2 rounded-xl p-3 transition-colors ${
                     v._id === selectedVariantId ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'
-                  } ${v.stock <= 0 ? 'opacity-50' : ''}`}
+                  }`}
                 >
                   <div className="font-medium text-foreground text-sm">{v.label}</div>
                   <div className="text-muted text-xs mt-0.5">
-                    ${v.price.toFixed(2)} {v.stock <= 0 && <span className="text-danger">&middot; Out of stock</span>}
+                    ${v.price.toFixed(2)}
                   </div>
                 </button>
               ))}
@@ -126,15 +125,13 @@ export default function ProductDetailInteractive({ product }) {
         <div className="flex gap-4 mb-8">
           <button
             onClick={handleAddToCart}
-            disabled={outOfStock}
-            className="flex-1 bg-white border-2 border-primary text-primary hover:bg-primary/5 text-center py-3.5 px-6 rounded-xl font-semibold transition-colors disabled:opacity-50"
+            className="flex-1 bg-white border-2 border-primary text-primary hover:bg-primary/5 text-center py-3.5 px-6 rounded-xl font-semibold transition-colors"
           >
-            {outOfStock ? 'Out of Stock' : added ? 'Added ✓' : 'Add to Cart'}
+            {added ? 'Added ✓' : 'Add to Cart'}
           </button>
           <button
             onClick={handleBuyNow}
-            disabled={outOfStock}
-            className="flex-1 bg-primary hover:bg-primary-dark text-primary-foreground text-center py-3.5 px-6 rounded-xl font-semibold transition-colors shadow-sm disabled:opacity-50"
+            className="flex-1 bg-primary hover:bg-primary-dark text-primary-foreground text-center py-3.5 px-6 rounded-xl font-semibold transition-colors shadow-sm"
           >
             Buy Now
           </button>

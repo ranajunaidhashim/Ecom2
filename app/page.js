@@ -102,7 +102,7 @@ export default async function Home() {
           <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col items-center mb-12">
               <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground tracking-widest uppercase mb-4 text-center">
-                Wigs & Hair Collection
+                Wigs &amp; Hair Collection
               </h2>
               <div className="w-16 h-1 bg-foreground"></div>
             </div>
