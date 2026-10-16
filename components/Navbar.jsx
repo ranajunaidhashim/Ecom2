@@ -10,6 +10,7 @@ const NAV_LINKS = [
   { href: '/products', label: 'All Products' },
   { href: '/products?category=human-hair-wigs', label: 'Wigs & Hair' },
   { href: '/products?category=women-clothes', label: 'Women Clothes' },
+  { href: '/products?category=swimwear', label: 'Swimwear' },
   { href: '/products?category=ear-rings', label: 'Jewelry' },
   { href: '/products?category=beauty', label: 'Beauty & Cosmetics' },
   { href: '/track', label: 'Track Order' },

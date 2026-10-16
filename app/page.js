@@ -36,17 +36,26 @@ const getCategoryProducts = unstable_cache(
     try {
       await dbConnect();
       const targetCategories = [
-        { name: "Women Clothes", regex: "women", value: "women-clothes" },
-        { name: "Ear Rings", regex: "ear", value: "ear-rings" },
-        { name: "Cosmetics", regex: "cosmetic", value: "cosmetics" },
-        { name: "Beauty", regex: "beauty", value: "beauty" },
-        { name: "Bags", regex: "bag", value: "bags" }
+        { name: "Women Clothes", values: ["women-clothes", "women"], value: "women-clothes" },
+        { name: "Swimwear", values: ["swimwear", "bikini"], value: "swimwear" },
+        { name: "Ear Rings", values: ["ear-rings", "earrings", "earring"], value: "ear-rings" },
+        { name: "Rings", values: ["rings", "ring"], value: "rings" },
+        { name: "Cosmetics", values: ["cosmetics", "cosmetic"], value: "cosmetics" },
+        { name: "Beauty", values: ["beauty"], value: "beauty" },
+        { name: "Bags", values: ["bags", "bag"], value: "bags" }
       ];
 
       const categoryResults = await Promise.all(
         targetCategories.map(async (cat) => {
+          const filter = {
+            $or: [
+              { category: { $in: cat.values } },
+              { category: { $regex: new RegExp(`^(${cat.values.join('|')})`, 'i') } }
+            ]
+          };
+
           const products = await Product.find(
-            { category: { $regex: new RegExp(cat.regex, "i") } },
+            filter,
             { name: 1, images: 1, category: 1, variants: 1, shippingCost: 1, description: 1 }
           ).sort({ createdAt: -1 }).limit(10).lean();
 
@@ -70,8 +79,8 @@ const getCategoryProducts = unstable_cache(
       return [];
     }
   },
-  ['category-sections'],
-  { revalidate: 300, tags: ['products'] }
+  ['category-sections-v2'],
+  { revalidate: 60, tags: ['products'] }
 );
 
 export default async function Home() {

@@ -115,17 +115,17 @@ export async function GET(request) {
     // Auto-detect best category from CJ categoryName and productName
     function detectCategory(catName = '', prodName = '') {
       const combined = `${catName} ${prodName}`.toLowerCase();
+      if (combined.includes('swimwear') || combined.includes('bikini') || combined.includes('swimsuit') || combined.includes('bathing suit')) return 'swimwear';
       if (combined.includes('wig') || combined.includes('hair')) return 'human-hair-wigs';
       if (combined.includes('ear ring') || combined.includes('earring') || combined.includes('ear-ring')) return 'ear-rings';
-      if (combined.includes('ring')) return 'rings';
-      if (combined.includes('bracelet')) return 'bracelet';
+      if (/\bring(s)?\b/i.test(combined) && !combined.includes('earring') && !combined.includes('keychain')) return 'rings';
+      if (combined.includes('bracelet') || combined.includes('bangle')) return 'bracelet';
       if (combined.includes('cosmetic')) return 'cosmetics';
       if (combined.includes('beauty')) return 'beauty';
       if (combined.includes('dental')) return 'dental';
       if (combined.includes('bag')) return 'bags';
       if (combined.includes('shoe')) return 'shoes';
       if (combined.includes('sunglass')) return 'sunglasses';
-      if (combined.includes('swimwear') || combined.includes('bikini')) return 'swimwear';
       if (combined.includes('toy')) return 'toys';
       if (combined.includes('women') || combined.includes('dress') || combined.includes('cloth')) return 'women-clothes';
       return 'other';
