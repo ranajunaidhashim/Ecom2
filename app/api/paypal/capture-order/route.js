@@ -15,6 +15,7 @@ export async function POST(req) {
     const capture = await capturePaypalOrder(paypalOrderId);
     const succeeded = capture.status === 'COMPLETED';
 
+    // Update status to 'paid' upon completion without changing the order's existing masked flag
     const order = await Order.findOneAndUpdate(
       { paypalOrderId },
       { status: succeeded ? 'paid' : 'pending' },

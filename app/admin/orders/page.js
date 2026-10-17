@@ -8,12 +8,14 @@ export default function AdminOrdersPage() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('all');
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
 
   const fetchOrders = async () => {
     try {
       const res = await fetch('/api/admin/orders');
       const data = await res.json();
       if (data.orders) setOrders(data.orders);
+      if (data.isSuperAdmin !== undefined) setIsSuperAdmin(Boolean(data.isSuperAdmin));
     } catch (err) {
       console.error(err);
     } finally {
@@ -145,7 +147,14 @@ export default function AdminOrdersPage() {
                           </div>
                         )}
                       </td>
-                      <td className="px-5 py-3">{statusBadge(order.status)}</td>
+                      <td className="px-5 py-3">
+                        {statusBadge(order.status)}
+                        {isSuperAdmin && order.masked && (
+                          <span className="block text-[10px] text-amber-600 dark:text-amber-400 font-medium mt-0.5">
+                            Masked
+                          </span>
+                        )}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -163,7 +172,14 @@ export default function AdminOrdersPage() {
                     <span className="font-mono text-xs text-muted">#{order._id.slice(-6).toUpperCase()}</span>
                     <span className="text-xs text-muted">{new Date(order.createdAt).toLocaleDateString()}</span>
                   </div>
-                  {statusBadge(order.status)}
+                  <div className="text-right">
+                    {statusBadge(order.status)}
+                    {isSuperAdmin && order.masked && (
+                      <span className="block text-[9px] text-amber-600 dark:text-amber-400 font-medium mt-0.5">
+                        Masked
+                      </span>
+                    )}
+                  </div>
                 </div>
 
                 <div className="p-4 space-y-3">

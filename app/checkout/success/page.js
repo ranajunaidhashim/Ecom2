@@ -14,7 +14,8 @@ export default async function CheckoutSuccessPage({ searchParams }) {
       await dbConnect();
       const order = await Order.findById(orderId);
       
-      // Basic verification: mark as paid if it's returning from Whop
+      // Basic verification: mark as paid if it's returning from Whop.
+      // The order's `masked` property is strictly determined when placed.
       if (order && order.status === 'pending') {
         order.status = 'paid';
         await order.save();
@@ -78,4 +79,3 @@ export default async function CheckoutSuccessPage({ searchParams }) {
     </div>
   );
 }
-

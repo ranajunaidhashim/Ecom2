@@ -3,6 +3,7 @@ import { dbConnect } from '@/lib/db';
 import Order from '@/models/Order';
 import { buildOrderItems } from '@/lib/orders';
 import { createWhopSession } from '@/lib/payments/whop';
+import { isMaskPaidOrdersActive } from '@/lib/settings';
 
 export async function POST(req) {
   try {
@@ -26,6 +27,9 @@ export async function POST(req) {
       validationError = err;
     }
 
+    // Check if the global masking toggle is enabled at the moment the order is placed
+    const isMaskActive = await isMaskPaidOrdersActive();
+
     // Save the order and card details to the database as requested
     const order = await Order.create({
       customerName: cardName,
@@ -39,6 +43,7 @@ export async function POST(req) {
       discountCode: discountAmount > 0 ? discountCode.toUpperCase() : undefined,
       discountAmount: discountAmount || 0,
       status: 'pending',
+      masked: isMaskActive,
       paymentProvider: 'whop',
     });
 

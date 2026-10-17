@@ -36,6 +36,7 @@ const OrderSchema = new mongoose.Schema({
   discountAmount: { type: Number, default: 0 },
   shippingCost: { type: Number, default: 0 },
   status: { type: String, enum: ['pending', 'paid', 'fulfilled', 'cancelled'], default: 'pending' },
+  masked: { type: Boolean, default: false },
   paymentProvider: { type: String, enum: ['viva', 'paypal', 'whop'], default: 'whop' },
   vivaOrderCode: { type: String },
   vivaTransactionId: { type: String },
@@ -44,6 +45,11 @@ const OrderSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 OrderSchema.index({ status: 1 });
+OrderSchema.index({ masked: 1 });
 OrderSchema.index({ createdAt: -1 });
+
+if (process.env.NODE_ENV !== 'production') {
+  delete mongoose.models.Order;
+}
 
 export default mongoose.models.Order || mongoose.model('Order', OrderSchema);

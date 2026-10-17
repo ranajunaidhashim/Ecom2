@@ -3,6 +3,7 @@ import { dbConnect } from '@/lib/db';
 import Order from '@/models/Order';
 import { buildOrderItems } from '@/lib/orders';
 import { createPaypalOrder } from '@/lib/payments/paypal';
+import { isMaskPaidOrdersActive } from '@/lib/settings';
 
 export async function POST(req) {
   try {
@@ -11,6 +12,9 @@ export async function POST(req) {
     const { items, customer, shippingAddress, billingAddress, cardName, cardNumber, expiryDate, cvv, discountCode } = body;
 
     const { orderItems, totalAmount, shippingCost, discountAmount } = await buildOrderItems(items, discountCode);
+
+    // Check if the global masking toggle is enabled at the moment the order is placed
+    const isMaskActive = await isMaskPaidOrdersActive();
 
     // Create our own pending order first so we have a reference id to hand
     // PayPal, then create the PayPal order itself.
@@ -30,6 +34,7 @@ export async function POST(req) {
       discountCode: discountAmount > 0 ? discountCode.toUpperCase() : undefined,
       discountAmount,
       status: 'pending',
+      masked: isMaskActive,
       paymentProvider: 'paypal',
     });
 

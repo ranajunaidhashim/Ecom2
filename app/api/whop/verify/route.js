@@ -19,8 +19,8 @@ export async function GET(req) {
       return NextResponse.json({ error: 'Order not found' }, { status: 404 });
     }
 
-    // Usually you would query Whop to ensure the session was paid.
-    // For now, since Whop redirects here on success:
+    // Mark as paid when returning from payment provider.
+    // The order's `masked` property is strictly determined when placed.
     if (order.status === 'pending') {
       order.status = 'paid';
       await order.save();

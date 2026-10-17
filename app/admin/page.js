@@ -7,7 +7,7 @@ export default function AdminDashboard() {
   const [data, setData] = useState({ metrics: null, recentOrders: [], role: null, isSuperAdmin: false });
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const loadDashboard = () => {
     fetch('/api/admin/dashboard')
       .then(res => res.json())
       .then(d => {
@@ -18,6 +18,10 @@ export default function AdminDashboard() {
         console.error(err);
         setLoading(false);
       });
+  };
+
+  useEffect(() => {
+    loadDashboard();
   }, []);
 
   if (loading) {
@@ -38,7 +42,15 @@ export default function AdminDashboard() {
           <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">Dashboard</h1>
           <p className="text-muted text-sm mt-1">Welcome back. Here&apos;s an overview of your store activity.</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
+          {isSuperAdmin && (
+            <Link
+              href="/admin/settings"
+              className="px-4 py-2 bg-surface border border-border text-foreground font-semibold text-xs uppercase tracking-wider rounded-lg shadow-sm hover:bg-elevated transition-colors"
+            >
+              Settings
+            </Link>
+          )}
           <Link
             href="/admin/products/new"
             className="px-4 py-2 bg-primary text-primary-foreground font-semibold text-xs uppercase tracking-wider rounded-lg shadow-sm hover:opacity-90 transition-opacity"

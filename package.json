@@ -1,6 +1,6 @@
 {
   "name": "velloura-collective",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,7 +9,6 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@paypal/react-paypal-js": "^10.1.2",
     "@whop/checkout": "^0.7.0",
     "@whop/sdk": "^1.1.4",
     "mongoose": "^8.5.1",
